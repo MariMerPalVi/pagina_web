@@ -46,13 +46,20 @@ No uses los datos de XAMPP en producción.
 
 1. Entra a phpMyAdmin desde InfinityFree.
 2. Selecciona la base de datos creada.
-3. Importa el archivo:
+3. Importa el archivo recomendado para InfinityFree:
 
 ```text
-database/schema.sql
+database/infinityfree.sql
 ```
 
-4. Si necesitas usuarios iniciales, ejecuta el instalador localmente o crea los usuarios desde SQL/PHP antes de publicar.
+Este archivo no intenta crear la base de datos, porque InfinityFree requiere que la base ya exista. También crea un usuario inicial:
+
+- Usuario: `admin`
+- Contraseña: `admin123`
+
+Cambia esa contraseña después de entrar al panel.
+
+El archivo `database/schema.sql` queda para entornos locales donde sí puedes crear la base de datos desde SQL.
 
 ## Publicar en InfinityFree
 
@@ -67,7 +74,7 @@ database/schema.sql
    - `config/`
    - `uploads/`
 4. Configura `config/database.php` con los datos reales de InfinityFree.
-5. Importa `database/schema.sql`.
+5. Importa `database/infinityfree.sql`.
 
 ## Panel administrativo
 

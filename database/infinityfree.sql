@@ -1,0 +1,77 @@
+CREATE TABLE IF NOT EXISTS usuarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(120) NOT NULL,
+  correo VARCHAR(160) NOT NULL,
+  usuario VARCHAR(80) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  rol ENUM('administrador', 'empleado') NOT NULL DEFAULT 'empleado',
+  estado ENUM('activo', 'inactivo') NOT NULL DEFAULT 'activo',
+  fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS categorias (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(120) NOT NULL,
+  descripcion TEXT NULL,
+  estado ENUM('activo', 'inactivo') NOT NULL DEFAULT 'activo',
+  fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS productos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(160) NOT NULL,
+  descripcion TEXT NOT NULL,
+  precio DECIMAL(10,2) NOT NULL DEFAULT 0,
+  categoria_id INT NOT NULL,
+  imagen VARCHAR(255) NULL,
+  estado ENUM('activo', 'inactivo') NOT NULL DEFAULT 'activo',
+  creado_por INT NULL,
+  fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  fecha_actualizacion TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_productos_categoria FOREIGN KEY (categoria_id) REFERENCES categorias(id),
+  CONSTRAINT fk_productos_usuario FOREIGN KEY (creado_por) REFERENCES usuarios(id) ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+INSERT INTO categorias (nombre, descripcion, estado)
+SELECT 'Cuellos escolares', 'Cuellos para uniformes escolares personalizados.', 'activo'
+WHERE NOT EXISTS (SELECT 1 FROM categorias WHERE nombre = 'Cuellos escolares');
+
+INSERT INTO categorias (nombre, descripcion, estado)
+SELECT 'Cuellos empresariales', 'Cuellos para prendas corporativas y uniformes empresariales.', 'activo'
+WHERE NOT EXISTS (SELECT 1 FROM categorias WHERE nombre = 'Cuellos empresariales');
+
+INSERT INTO categorias (nombre, descripcion, estado)
+SELECT 'Camisetas personalizadas', 'Camisetas para eventos, campañas, grupos y marcas.', 'activo'
+WHERE NOT EXISTS (SELECT 1 FROM categorias WHERE nombre = 'Camisetas personalizadas');
+
+INSERT INTO categorias (nombre, descripcion, estado)
+SELECT 'Equipos deportivos', 'Uniformes sublimados y estampados para equipos.', 'activo'
+WHERE NOT EXISTS (SELECT 1 FROM categorias WHERE nombre = 'Equipos deportivos');
+
+INSERT INTO categorias (nombre, descripcion, estado)
+SELECT 'Prendas para hombre', 'Prendas en telas de punto para hombres.', 'activo'
+WHERE NOT EXISTS (SELECT 1 FROM categorias WHERE nombre = 'Prendas para hombre');
+
+INSERT INTO categorias (nombre, descripcion, estado)
+SELECT 'Prendas para mujer', 'Prendas en telas de punto para mujeres.', 'activo'
+WHERE NOT EXISTS (SELECT 1 FROM categorias WHERE nombre = 'Prendas para mujer');
+
+INSERT INTO categorias (nombre, descripcion, estado)
+SELECT 'Prendas para niños', 'Prendas cómodas y personalizadas para niños.', 'activo'
+WHERE NOT EXISTS (SELECT 1 FROM categorias WHERE nombre = 'Prendas para niños');
+
+INSERT INTO categorias (nombre, descripcion, estado)
+SELECT 'Bordados institucionales', 'Sellos, nombres y logotipos bordados.', 'activo'
+WHERE NOT EXISTS (SELECT 1 FROM categorias WHERE nombre = 'Bordados institucionales');
+
+INSERT INTO categorias (nombre, descripcion, estado)
+SELECT 'Sublimados', 'Diseños sublimados con acabado profesional.', 'activo'
+WHERE NOT EXISTS (SELECT 1 FROM categorias WHERE nombre = 'Sublimados');
+
+INSERT INTO categorias (nombre, descripcion, estado)
+SELECT 'Estampados', 'Estampados textiles para prendas personalizadas.', 'activo'
+WHERE NOT EXISTS (SELECT 1 FROM categorias WHERE nombre = 'Estampados');
+
+INSERT INTO usuarios (nombre, correo, usuario, password_hash, rol, estado)
+SELECT 'Administrador FALEX', 'ventas@falextextil.com', 'admin', '$2y$10$wiG68jVpG6W94ollFok9tuvricaB88.OmdPIq2zZLCBHli2DlKyhi', 'administrador', 'activo'
+WHERE NOT EXISTS (SELECT 1 FROM usuarios WHERE usuario = 'admin');

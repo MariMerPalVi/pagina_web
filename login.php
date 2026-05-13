@@ -14,7 +14,7 @@ $dbError = '';
 try {
     db();
 } catch (PDOException $exception) {
-    $dbError = 'No se pudo conectar con MySQL. Verifica que MySQL esté iniciado en XAMPP y que el puerto configurado sea ' . DB_PORT . '.';
+    $dbError = 'No se pudo conectar con MySQL. Revisa en config/database.php el host, nombre de base de datos, usuario y contraseña entregados por InfinityFree.';
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
