@@ -5,11 +5,11 @@ declare(strict_types=1);
 // InfinityFree: reemplaza estos valores con los datos reales del panel MySQL.
 // Importante: en InfinityFree el host NO suele ser localhost ni 127.0.0.1.
 // Ejemplo de host: sqlXXX.infinityfree.com
-const DB_HOST = '127.0.0.1';
+const DB_HOST = 'sql112.infinityfree.com';
 const DB_PORT = '3306';
-const DB_NAME = 'falex_textil';
-const DB_USER = 'root';
-const DB_PASS = '';
+const DB_NAME = 'if0_41910792_infinityfree';
+const DB_USER = 'if0_41910792';
+const DB_PASS = ''SVY78wl17l53l;
 const DB_CHARSET = 'utf8mb4';
 
 function db(): PDO
