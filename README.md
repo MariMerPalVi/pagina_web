@@ -1,51 +1,113 @@
-# FALEX Fábrica Textil
+# FALEX Fábrica Textil - Versión Netlify
 
-Sistema web PHP/MySQL para una fábrica textil con página pública, catálogo dinámico, login por roles y panel administrativo.
+Este proyecto tiene una versión estática lista para publicar en Netlify. Netlify no ejecuta PHP ni MySQL, por eso la carpeta que se debe subir es `netlify/`.
 
-## Requisitos
+## Carpeta para publicar
 
-- XAMPP con Apache y MySQL activos.
-- PHP incluido en XAMPP.
-- Navegador web.
+Sube o configura como **Publish directory**:
 
-## Instalación
+```text
+netlify/
+```
 
-1. Copia o conserva este proyecto en `C:\xampp\htdocs\pagina_web`.
-2. Inicia Apache y MySQL desde el panel de XAMPP.
-3. Abre `http://localhost/pagina_web/install.php`.
-4. Presiona **Crear base de datos e instalar**.
-5. Entra al panel en `http://localhost/pagina_web/login.php`.
+Estructura principal:
 
-## Usuarios iniciales
+```text
+netlify/
+├── index.html
+├── nosotros.html
+├── servicios.html
+├── catalogo.html
+├── galeria.html
+├── contacto.html
+├── gracias.html
+├── admin.html
+├── _redirects
+├── css/
+├── js/
+├── assets/
+└── uploads/products/
+```
 
-- Administrador: `admin` / `admin123`
-- Empleado: `empleado` / `empleado123`
+## Publicar en Netlify
 
-Cambia estas contraseñas después de instalar el sistema en un entorno real.
+1. Entra a Netlify.
+2. Crea un nuevo sitio.
+3. Sube la carpeta `netlify/` o configura esa carpeta como directorio de publicación.
+4. No necesitas comando de build.
+5. El archivo principal es `index.html`.
 
-## URLs principales
+## Formulario de contacto
 
-- Página pública: `http://localhost/pagina_web/`
-- Instalador: `http://localhost/pagina_web/install.php`
-- Login interno: `http://localhost/pagina_web/login.php`
-- Panel: `http://localhost/pagina_web/admin/`
+El formulario de `contacto.html` está preparado para **Netlify Forms**:
 
-## Módulos
+```html
+<form name="contacto" method="POST" action="gracias.html" data-netlify="true" netlify>
+```
 
-- Catálogo público con productos activos.
-- Filtro público por categorías.
-- Productos: crear, editar, eliminar, activar, desactivar y subir imagen.
-- Categorías: crear, editar, activar y desactivar.
-- Empleados: crear, editar, cambiar contraseña y activar/desactivar, solo para administrador.
-- Dashboard con estadísticas.
+Los mensajes enviados aparecerán en el panel de Netlify, dentro de **Forms**.
 
-## Configuración rápida
+## Qué funciona en Netlify
 
-Los datos de contacto están en `includes/helpers.php`:
+- Página de inicio.
+- Nosotros.
+- Servicios.
+- Catálogo estático.
+- Galería estática.
+- Contacto con Netlify Forms.
+- Botones de WhatsApp.
+- Navegación entre páginas HTML.
+- Archivo `_redirects` para evitar errores 404 en rutas internas.
 
-- `WHATSAPP_NUMBER`
-- `CONTACT_EMAIL`
-- `CONTACT_PHONE`
-- `CONTACT_ADDRESS`
+## Qué no funciona en Netlify
 
-La conexión a base de datos está en `config/database.php`.
+Netlify no ejecuta PHP, por lo tanto no funcionará directamente:
+
+- Login.
+- Panel administrativo.
+- Usuarios y roles.
+- Base de datos MySQL.
+- Instalador PHP.
+- CRUD de productos.
+- Subida de imágenes desde el panel.
+
+Esas funciones siguen existiendo en la versión PHP del proyecto, pero requieren hosting con PHP y MySQL, como XAMPP, cPanel, Hostinger, DonWeb, etc.
+
+## Archivos PHP
+
+Los archivos `.php` se conservan como versión dinámica/local del sistema, pero no deben subirse como sitio final a Netlify.
+
+Para Netlify usa únicamente la carpeta:
+
+```text
+netlify/
+```
+
+## Actualizar catálogo o galería
+
+La versión estática usa una copia fija de los productos e imágenes existentes al momento de generar los HTML.
+
+Si cambias productos desde el panel PHP local:
+
+1. Actualiza productos e imágenes en el sistema local.
+2. Regenera o actualiza los archivos estáticos.
+3. Vuelve a subir la carpeta `netlify/` a Netlify.
+
+## Alternativas para administración en Netlify
+
+Para tener administración real en Netlify se necesita reescribir la parte dinámica usando una solución compatible, por ejemplo:
+
+- Netlify Functions.
+- Supabase.
+- Firebase.
+- Airtable.
+- Headless CMS.
+- Base de datos externa con API.
+
+## Archivos importantes
+
+- Sitio estático: `netlify/`
+- Estilos: `netlify/css/styles.css`
+- JavaScript: `netlify/js/main.js`
+- Redirecciones: `netlify/_redirects`
+- Formulario: `netlify/contacto.html`
