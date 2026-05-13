@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+// InfinityFree: reemplaza estos valores con los datos de MySQL que te da el panel.
+// En XAMPP puedes mantener 127.0.0.1, 3306, root y contraseña vacía.
 const DB_HOST = '127.0.0.1';
 const DB_PORT = '3306';
 const DB_NAME = 'falex_textil';
@@ -38,7 +40,7 @@ function ensure_mysql_is_ready(): void
     $socket = @fsockopen(DB_HOST, (int) DB_PORT, $errno, $error, 1.0);
 
     if (!$socket) {
-        throw new PDOException('MySQL no está disponible en ' . DB_HOST . ':' . DB_PORT . '. Inicia o reinicia MySQL desde XAMPP.');
+        throw new PDOException('MySQL no está disponible en ' . DB_HOST . ':' . DB_PORT . '. Revisa las credenciales y el host de base de datos.');
     }
 
     stream_set_timeout($socket, 1);
@@ -47,6 +49,6 @@ function ensure_mysql_is_ready(): void
     fclose($socket);
 
     if ($handshake === '' || !empty($meta['timed_out'])) {
-        throw new PDOException('MySQL está abierto en el puerto ' . DB_PORT . ', pero no responde. Reinicia MySQL desde XAMPP.');
+        throw new PDOException('MySQL está abierto en el puerto ' . DB_PORT . ', pero no responde. Revisa el servicio o los datos de conexión.');
     }
 }

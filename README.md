@@ -1,113 +1,119 @@
-# FALEX Fábrica Textil - Versión Netlify
+# FALEX Fábrica Textil - PHP para InfinityFree
 
-Este proyecto tiene una versión estática lista para publicar en Netlify. Netlify no ejecuta PHP ni MySQL, por eso la carpeta que se debe subir es `netlify/`.
+Proyecto web en PHP/MySQL para una fábrica textil. Esta versión está preparada para publicarse en un hosting tradicional compatible con PHP, como InfinityFree.
 
-## Carpeta para publicar
+## Requisitos
 
-Sube o configura como **Publish directory**:
-
-```text
-netlify/
-```
-
-Estructura principal:
-
-```text
-netlify/
-├── index.html
-├── nosotros.html
-├── servicios.html
-├── catalogo.html
-├── galeria.html
-├── contacto.html
-├── gracias.html
-├── admin.html
-├── _redirects
-├── css/
-├── js/
-├── assets/
-└── uploads/products/
-```
-
-## Publicar en Netlify
-
-1. Entra a Netlify.
-2. Crea un nuevo sitio.
-3. Sube la carpeta `netlify/` o configura esa carpeta como directorio de publicación.
-4. No necesitas comando de build.
-5. El archivo principal es `index.html`.
-
-## Formulario de contacto
-
-El formulario de `contacto.html` está preparado para **Netlify Forms**:
-
-```html
-<form name="contacto" method="POST" action="gracias.html" data-netlify="true" netlify>
-```
-
-Los mensajes enviados aparecerán en el panel de Netlify, dentro de **Forms**.
-
-## Qué funciona en Netlify
-
-- Página de inicio.
-- Nosotros.
-- Servicios.
-- Catálogo estático.
-- Galería estática.
-- Contacto con Netlify Forms.
-- Botones de WhatsApp.
-- Navegación entre páginas HTML.
-- Archivo `_redirects` para evitar errores 404 en rutas internas.
-
-## Qué no funciona en Netlify
-
-Netlify no ejecuta PHP, por lo tanto no funcionará directamente:
-
-- Login.
-- Panel administrativo.
-- Usuarios y roles.
+- Hosting con PHP.
 - Base de datos MySQL.
-- Instalador PHP.
-- CRUD de productos.
-- Subida de imágenes desde el panel.
+- Acceso al administrador de archivos o FTP.
+- En InfinityFree, subir el proyecto dentro de la carpeta `/htdocs/`.
 
-Esas funciones siguen existiendo en la versión PHP del proyecto, pero requieren hosting con PHP y MySQL, como XAMPP, cPanel, Hostinger, DonWeb, etc.
+## Archivos principales
 
-## Archivos PHP
+- Página pública: `index.php`
+- Nosotros: `nosotros.php`
+- Servicios: `servicios.php`
+- Catálogo dinámico: `catalogo.php`
+- Galería dinámica: `galeria.php`
+- Contacto: `contacto.php`
+- Login: `login.php`
+- Panel administrativo: `admin/`
+- Conexión MySQL: `config/database.php`
+- Base de datos: `database/schema.sql`
 
-Los archivos `.php` se conservan como versión dinámica/local del sistema, pero no deben subirse como sitio final a Netlify.
+## Configurar base de datos en InfinityFree
 
-Para Netlify usa únicamente la carpeta:
+En el panel de InfinityFree crea una base de datos MySQL. Luego edita:
 
 ```text
-netlify/
+config/database.php
 ```
 
-## Actualizar catálogo o galería
+Debes reemplazar manualmente estos valores con los datos reales que te entrega InfinityFree:
 
-La versión estática usa una copia fija de los productos e imágenes existentes al momento de generar los HTML.
+```php
+const DB_HOST = '...';
+const DB_PORT = '3306';
+const DB_NAME = '...';
+const DB_USER = '...';
+const DB_PASS = '...';
+```
 
-Si cambias productos desde el panel PHP local:
+No uses los datos de XAMPP en producción.
 
-1. Actualiza productos e imágenes en el sistema local.
-2. Regenera o actualiza los archivos estáticos.
-3. Vuelve a subir la carpeta `netlify/` a Netlify.
+## Importar la base de datos
 
-## Alternativas para administración en Netlify
+1. Entra a phpMyAdmin desde InfinityFree.
+2. Selecciona la base de datos creada.
+3. Importa el archivo:
 
-Para tener administración real en Netlify se necesita reescribir la parte dinámica usando una solución compatible, por ejemplo:
+```text
+database/schema.sql
+```
 
-- Netlify Functions.
-- Supabase.
-- Firebase.
-- Airtable.
-- Headless CMS.
-- Base de datos externa con API.
+4. Si necesitas usuarios iniciales, ejecuta el instalador localmente o crea los usuarios desde SQL/PHP antes de publicar.
 
-## Archivos importantes
+## Publicar en InfinityFree
 
-- Sitio estático: `netlify/`
-- Estilos: `netlify/css/styles.css`
-- JavaScript: `netlify/js/main.js`
-- Redirecciones: `netlify/_redirects`
-- Formulario: `netlify/contacto.html`
+1. Sube el contenido del proyecto a `/htdocs/`.
+2. Asegúrate de que `index.php` quede directamente dentro de `/htdocs/`.
+3. Sube también:
+   - `admin/`
+   - `assets/`
+   - `css/`
+   - `js/`
+   - `includes/`
+   - `config/`
+   - `uploads/`
+4. Configura `config/database.php` con los datos reales de InfinityFree.
+5. Importa `database/schema.sql`.
+
+## Panel administrativo
+
+El panel está en:
+
+```text
+/login.php
+```
+
+Desde ahí puedes administrar:
+
+- Productos.
+- Categorías.
+- Empleados.
+- Imágenes del catálogo.
+- Galería pública basada en productos activos con imagen.
+
+## Formularios
+
+El formulario de contacto usa comportamiento PHP/HTML tradicional. No usa Netlify Forms.
+
+Si deseas guardar mensajes en base de datos o enviarlos por correo con PHP, se puede agregar un procesador como `procesar_contacto.php`.
+
+## Notas importantes
+
+- Netlify no se usa en esta versión.
+- No se requiere `_redirects`.
+- No se usan archivos `.html` duplicados.
+- El sitio principal vuelve a ser `index.php`.
+- La carpeta `uploads/products/` debe tener permisos de escritura para poder subir imágenes desde el panel.
+
+## Desarrollo local con XAMPP
+
+Para trabajar localmente:
+
+1. Coloca el proyecto en:
+
+```text
+C:\xampp\htdocs\pagina_web
+```
+
+2. Inicia Apache y MySQL.
+3. Abre:
+
+```text
+http://localhost/pagina_web/
+```
+
+4. Configura `config/database.php` para XAMPP si es necesario.

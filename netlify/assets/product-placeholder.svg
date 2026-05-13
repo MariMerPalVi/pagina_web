@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="680" viewBox="0 0 900 680" role="img" aria-label="Producto FALEX">
-  <rect width="900" height="680" fill="#f7f3eb"/>
-  <path d="M160 150h580v380H160z" fill="#ffffff" stroke="#e2d8c9" stroke-width="6"/>
-  <path d="M250 210h400v46H250zm0 88h300v34H250zm0 70h330v34H250z" fill="#b42f35" opacity=".88"/>
-  <path d="M692 150c-60 60-122 126-184 198S389 496 330 530h410V150z" fill="#0e7c86" opacity=".14"/>
-  <text x="450" y="610" fill="#17202a" font-family="Arial, sans-serif" font-size="44" font-weight="700" text-anchor="middle">FALEX</text>
-</svg>

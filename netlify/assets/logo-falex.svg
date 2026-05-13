@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 640 640" role="img" aria-label="FALEX Fábrica Textil">
-  <rect width="640" height="640" rx="54" fill="#f7f1e7"/>
-  <path d="M76 96h488v448H76z" fill="#fffaf2" stroke="#e3d4c2" stroke-width="10"/>
-  <path d="M86 210h92v246h-92zm0-84h236v72H86zm156 84h92v246h-92zm-70 92h138v72H172zm204-176h92v330h-92zm138 0h72l-86 166 90 164h-76l-54-100-52 100h-72l88-164-84-166h76l48 96z" fill="#b42f35"/>
-  <text x="320" y="545" text-anchor="middle" fill="#0e7c86" font-family="Arial, sans-serif" font-size="48" font-weight="700">FÁBRICA TEXTIL</text>
-</svg>
