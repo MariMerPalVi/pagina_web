@@ -27,15 +27,7 @@ public_header('Inicio', 'inicio');
       <div class="fabric-card">
         <img class="hero-logo" src="<?= e(url('assets/LOGO.png')) ?>" alt="Logo FALEX Fábrica Textil" width="420" height="420">
       </div>
-      <div class="hero-tags" aria-hidden="true">
-        <span>Bordados</span>
-        <span>Sublimación</span>
-        <span>Uniformes</span>
-      </div>
-      <div class="production-card">
-        <span>Catálogo administrable</span>
-        <strong>Productos, precios e imágenes desde el panel interno</strong>
-      </div>
+      
     </div>
   </section>
 
