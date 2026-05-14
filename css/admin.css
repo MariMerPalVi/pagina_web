@@ -533,6 +533,16 @@ body.admin-body::before {
   background: #e2e8f0;
 }
 
+.status.en_proceso {
+  color: #075985;
+  background: #e0f2fe;
+}
+
+.status.finalizada {
+  color: #14532d;
+  background: #dcfce7;
+}
+
 .quote-detail {
   display: grid;
   gap: 8px;
@@ -567,6 +577,12 @@ body.admin-body::before {
 
 .quote-response small {
   color: var(--admin-muted);
+}
+
+.work-order-box {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
 }
 
 .admin-form button:disabled {

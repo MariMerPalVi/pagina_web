@@ -25,6 +25,27 @@ UPDATE solicitudes_cotizacion SET estado = 'no_respondida' WHERE estado = 'cerra
 ALTER TABLE solicitudes_cotizacion
   MODIFY estado ENUM('pendiente', 'respondida', 'no_respondida') NOT NULL DEFAULT 'pendiente';
 
+CREATE TABLE IF NOT EXISTS ordenes_trabajo (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  solicitud_id INT NULL,
+  cliente_nombre VARCHAR(160) NOT NULL,
+  cliente_telefono VARCHAR(60) NOT NULL,
+  cliente_correo VARCHAR(160) NULL,
+  producto VARCHAR(160) NOT NULL,
+  cantidad VARCHAR(80) NULL,
+  tallas VARCHAR(255) NULL,
+  detalles TEXT NOT NULL,
+  fecha_entrega DATE NULL,
+  asignado_a INT NULL,
+  estado ENUM('pendiente', 'en_proceso', 'finalizada') NOT NULL DEFAULT 'pendiente',
+  creado_por INT NULL,
+  fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  fecha_actualizacion TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_ordenes_solicitud FOREIGN KEY (solicitud_id) REFERENCES solicitudes_cotizacion(id) ON DELETE SET NULL,
+  CONSTRAINT fk_ordenes_asignado FOREIGN KEY (asignado_a) REFERENCES usuarios(id) ON DELETE SET NULL,
+  CONSTRAINT fk_ordenes_creador FOREIGN KEY (creado_por) REFERENCES usuarios(id) ON DELETE SET NULL
+) ENGINE=InnoDB;
+
 INSERT INTO configuraciones (clave, valor)
 SELECT 'social_instagram', ''
 WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'social_instagram');

@@ -14,6 +14,7 @@ function admin_header(string $title): void
         ['Dashboard', 'index.php', ['index.php']],
         ['Productos', 'products.php', ['products.php', 'product_form.php']],
         ['Categorías', 'categories.php', ['categories.php']],
+        ['Órdenes', 'orders.php', ['orders.php']],
     ];
 
     if (is_admin()) {
