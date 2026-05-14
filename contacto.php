@@ -68,7 +68,7 @@ $flashes = get_flashes();
 <main>
   <?php page_hero('Contacto', 'Cuéntanos qué necesitas confeccionar', 'Te asesoramos con telas, tallas, cantidades, bordados, estampados, sublimación y tiempos de entrega.'); ?>
 
-  <section class="section contact-section">
+  <section class="section contact-section" id="cotizacion">
     <div class="contact-info">
       <p class="eyebrow">Datos de contacto</p>
       <h2>Solicita información o cotiza tu proyecto</h2>
@@ -91,7 +91,7 @@ $flashes = get_flashes();
         <?php endif; ?>
       </ul>
     </div>
-    <form class="contact-form" method="post">
+    <form class="contact-form" method="post" id="form-cotizacion">
       <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
       <label>Nombre<input type="text" name="nombre" placeholder="Tu nombre o institución" required></label>
       <label>Teléfono<input type="tel" name="telefono" placeholder="+593..." required></label>

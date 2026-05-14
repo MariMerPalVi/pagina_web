@@ -428,20 +428,24 @@ body.admin-body::before {
   width: 100%;
   overflow-x: auto;
   border-radius: 10px;
+  padding-bottom: 4px;
 }
 
 .admin-table {
   width: 100%;
-  min-width: 780px;
+  min-width: 860px;
+  table-layout: fixed;
   border-collapse: separate;
-  border-spacing: 0 8px;
+  border-spacing: 0 10px;
 }
 
 .admin-table th,
 .admin-table td {
-  padding: 16px 12px;
+  padding: 16px 14px;
   text-align: left;
-  vertical-align: middle;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  line-height: 1.45;
 }
 
 .admin-table th {
@@ -450,6 +454,11 @@ body.admin-body::before {
   font-weight: 900;
   letter-spacing: 0.03em;
   text-transform: uppercase;
+}
+
+.admin-table th:last-child,
+.admin-table td:last-child {
+  width: 260px;
 }
 
 .admin-table tbody tr:hover {
@@ -483,6 +492,7 @@ body.admin-body::before {
 .admin-table td small {
   color: var(--admin-muted);
   font-size: 0.82rem;
+  line-height: 1.35;
 }
 
 .table-image {
@@ -492,6 +502,7 @@ body.admin-body::before {
 
 .actions {
   align-items: center;
+  min-width: 0;
 }
 
 .actions form {
@@ -500,6 +511,7 @@ body.admin-body::before {
 
 .actions .btn {
   min-height: 34px;
+  white-space: nowrap;
   border-color: #e4e0d8;
   color: var(--admin-ink);
   background: #f7f6f3;
@@ -653,6 +665,16 @@ body.admin-body::before {
   color: var(--admin-ink);
   font: inherit;
   background: #fff;
+}
+
+.admin-form select[multiple] {
+  min-height: 120px;
+  padding: 8px;
+}
+
+.admin-form select[multiple] option {
+  padding: 8px 10px;
+  border-radius: 8px;
 }
 
 .admin-form textarea {
@@ -975,6 +997,7 @@ body.admin-body::before {
 
   .admin-table {
     min-width: 0;
+    table-layout: auto;
   }
 
   .admin-table,
@@ -1010,6 +1033,7 @@ body.admin-body::before {
   }
 
   .admin-table td {
+    width: auto !important;
     min-height: 38px;
     display: grid;
     grid-template-columns: 112px minmax(0, 1fr);

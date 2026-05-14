@@ -59,6 +59,22 @@ function ensure_work_orders_table(): void
             CONSTRAINT fk_ordenes_imagenes_orden FOREIGN KEY (orden_id) REFERENCES ordenes_trabajo(id) ON DELETE CASCADE
         ) ENGINE=InnoDB'
     );
+
+    db()->exec(
+        'CREATE TABLE IF NOT EXISTS ordenes_trabajo_responsables (
+            orden_id INT NOT NULL,
+            usuario_id INT NOT NULL,
+            fecha_asignacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (orden_id, usuario_id),
+            CONSTRAINT fk_ordenes_responsables_orden FOREIGN KEY (orden_id) REFERENCES ordenes_trabajo(id) ON DELETE CASCADE,
+            CONSTRAINT fk_ordenes_responsables_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB'
+    );
+
+    try {
+        db()->exec('INSERT IGNORE INTO ordenes_trabajo_responsables (orden_id, usuario_id) SELECT id, asignado_a FROM ordenes_trabajo WHERE asignado_a IS NOT NULL');
+    } catch (Throwable) {
+    }
 }
 
 ensure_quotes_table();
@@ -117,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $tallas = trim($_POST['tallas'] ?? '');
         $detalles = trim($_POST['detalles'] ?? '');
         $fechaEntrega = trim($_POST['fecha_entrega'] ?? '');
-        $asignadoA = (int) ($_POST['asignado_a'] ?? 0);
+        $responsables = $_POST['responsables'] ?? [];
 
         if ($producto === '' || $detalles === '') {
             flash('error', 'Completa producto y detalles de la orden.');
@@ -126,8 +142,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $stmt = db()->prepare(
             'INSERT INTO ordenes_trabajo
-             (solicitud_id, cliente_nombre, cliente_telefono, cliente_correo, producto, cantidad, tallas, detalles, fecha_entrega, asignado_a, creado_por)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+            (solicitud_id, cliente_nombre, cliente_telefono, cliente_correo, producto, cantidad, tallas, detalles, fecha_entrega, creado_por)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
         );
         $stmt->execute([
             $id,
@@ -139,10 +155,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tallas ?: null,
             $detalles,
             $fechaEntrega ?: null,
-            $asignadoA > 0 ? $asignadoA : null,
             current_user()['id'],
         ]);
         $orderId = (int) db()->lastInsertId();
+
+        $responsibleIds = array_values(array_unique(array_filter(array_map('intval', is_array($responsables) ? $responsables : []), static fn (int $userId): bool => $userId > 0)));
+        if ($responsibleIds) {
+            $responsibleStmt = db()->prepare('INSERT INTO ordenes_trabajo_responsables (orden_id, usuario_id) VALUES (?, ?)');
+            foreach ($responsibleIds as $userId) {
+                $responsibleStmt->execute([$orderId, $userId]);
+            }
+        }
 
         $images = upload_order_images($_FILES['imagenes'] ?? []);
         if ($images) {
@@ -163,7 +186,15 @@ if ($viewId > 0) {
     $selected = $stmt->fetch();
 
     if ($selected) {
-        $stmt = db()->prepare('SELECT o.*, u.nombre AS empleado FROM ordenes_trabajo o LEFT JOIN usuarios u ON u.id = o.asignado_a WHERE o.solicitud_id = ? LIMIT 1');
+        $stmt = db()->prepare(
+            'SELECT o.*, GROUP_CONCAT(u.nombre ORDER BY u.nombre SEPARATOR ", ") AS responsables
+             FROM ordenes_trabajo o
+             LEFT JOIN ordenes_trabajo_responsables r ON r.orden_id = o.id
+             LEFT JOIN usuarios u ON u.id = r.usuario_id
+             WHERE o.solicitud_id = ?
+             GROUP BY o.id
+             LIMIT 1'
+        );
         $stmt->execute([$viewId]);
         $workOrder = $stmt->fetch();
     }
@@ -268,7 +299,7 @@ admin_header('Cotizaciones');
             <div class="quote-response">
               <strong>Orden #<?= (int) $workOrder['id'] ?> creada</strong>
               <p><?= e($workOrder['producto']) ?><?= $workOrder['tallas'] ? ' · Tallas: ' . e($workOrder['tallas']) : '' ?></p>
-              <small>Estado: <?= e(str_replace('_', ' ', $workOrder['estado'])) ?><?= $workOrder['empleado'] ? ' · Asignada a ' . e($workOrder['empleado']) : '' ?></small>
+              <small>Estado: <?= e(str_replace('_', ' ', $workOrder['estado'])) ?><?= $workOrder['responsables'] ? ' · Responsables: ' . e($workOrder['responsables']) : '' ?></small>
             </div>
             <a class="btn btn-secondary" href="<?= e(url('admin/orders.php')) ?>">Ver órdenes</a>
           <?php else: ?>
@@ -281,13 +312,13 @@ admin_header('Cotizaciones');
                 <label>Cantidad<input type="text" name="cantidad" placeholder="Ej. 24 prendas"></label>
                 <label>Tallas<input type="text" name="tallas" placeholder="Ej. S: 5, M: 10, L: 9"></label>
                 <label>Fecha de entrega<input type="date" name="fecha_entrega"></label>
-                <label>Asignar a empleado
-                  <select name="asignado_a">
-                    <option value="">Sin asignar</option>
+                <label>Responsables
+                  <select name="responsables[]" multiple size="<?= max(3, min(6, count($employees))) ?>">
                     <?php foreach ($employees as $employee): ?>
                       <option value="<?= (int) $employee['id'] ?>"><?= e($employee['nombre']) ?></option>
                     <?php endforeach; ?>
                   </select>
+                  <small>Mantén presionada la tecla Ctrl para seleccionar varios responsables.</small>
                 </label>
               </div>
               <label>Detalles de producción

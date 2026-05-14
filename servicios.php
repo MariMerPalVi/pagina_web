@@ -16,7 +16,7 @@ public_header('Servicios', 'servicios');
     <div class="card-grid services-grid">
       <?php foreach ($services as $index => $service): ?>
         <article class="service-card">
-          <div class="service-image" aria-hidden="true"><span><?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?></span></div>
+          <div class="service-icon" aria-hidden="true"><?= icon_svg($service[2] ?? 'services') ?><span><?= str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) ?></span></div>
           <h3><?= e($service[0]) ?></h3>
           <p><?= e($service[1]) ?></p>
         </article>

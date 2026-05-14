@@ -27,12 +27,6 @@ $labels = [
     'social_instagram' => 'Instagram',
     'social_facebook' => 'Facebook',
     'social_tiktok' => 'TikTok',
-    'footer_link_1_label' => 'Enlace 1 - texto',
-    'footer_link_1_url' => 'Enlace 1 - URL',
-    'footer_link_2_label' => 'Enlace 2 - texto',
-    'footer_link_2_url' => 'Enlace 2 - URL',
-    'footer_link_3_label' => 'Enlace 3 - texto',
-    'footer_link_3_url' => 'Enlace 3 - URL',
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -115,20 +109,6 @@ admin_header('Configuración');
       TikTok
       <input type="url" name="social_tiktok" value="<?= e($settings['social_tiktok']) ?>" placeholder="https://tiktok.com/@falex">
     </label>
-
-    <div class="panel-subsection">
-      <h3>Enlaces del footer</h3>
-      <p class="muted-text">Configura accesos rápidos visibles en el pie de página. Puedes usar rutas internas como catalogo.php o enlaces completos.</p>
-    </div>
-
-    <div class="form-grid">
-      <label>Texto enlace 1<input type="text" name="footer_link_1_label" value="<?= e($settings['footer_link_1_label']) ?>" placeholder="Inicio"></label>
-      <label>URL enlace 1<input type="text" name="footer_link_1_url" value="<?= e($settings['footer_link_1_url']) ?>" placeholder="index.php"></label>
-      <label>Texto enlace 2<input type="text" name="footer_link_2_label" value="<?= e($settings['footer_link_2_label']) ?>" placeholder="Catálogo"></label>
-      <label>URL enlace 2<input type="text" name="footer_link_2_url" value="<?= e($settings['footer_link_2_url']) ?>" placeholder="catalogo.php"></label>
-      <label>Texto enlace 3<input type="text" name="footer_link_3_label" value="<?= e($settings['footer_link_3_label']) ?>" placeholder="Contacto"></label>
-      <label>URL enlace 3<input type="text" name="footer_link_3_url" value="<?= e($settings['footer_link_3_url']) ?>" placeholder="contacto.php"></label>
-    </div>
 
     <div class="form-actions">
       <button class="btn btn-primary" type="submit">Guardar configuración</button>

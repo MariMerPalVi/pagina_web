@@ -89,11 +89,36 @@ a {
 .top-contact-bar div {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 18px;
 }
 
 .top-contact-bar a:hover {
   color: #f4c7ca;
+}
+
+.top-social-link {
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+}
+
+.top-social-link svg {
+  width: 15px;
+  height: 15px;
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.top-social-link svg * {
+  fill: none !important;
+  stroke: currentColor !important;
 }
 
 .navbar {
@@ -762,6 +787,51 @@ h3 {
     #f5efe6;
 }
 
+.service-icon {
+  width: 46px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 18px;
+  color: var(--brand);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #faf9f6;
+}
+
+.service-icon svg {
+  width: 22px;
+  height: 22px;
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.service-icon svg * {
+  fill: none !important;
+  stroke: currentColor !important;
+}
+
+.service-icon span {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  min-width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 900;
+  border-radius: 999px;
+  background: var(--brand);
+}
+
 .service-image span {
   display: inline-grid;
   place-items: center;
@@ -1263,6 +1333,10 @@ h3 {
   box-shadow: var(--shadow);
 }
 
+main > .cta-section:last-child {
+  margin-bottom: 76px;
+}
+
 .cta-section h2 {
   max-width: 760px;
   margin-bottom: 0;
@@ -1277,6 +1351,7 @@ h3 {
   grid-template-columns: 0.78fr 1fr;
   gap: 44px;
   align-items: start;
+  scroll-margin-top: 110px;
 }
 
 .contact-info p {

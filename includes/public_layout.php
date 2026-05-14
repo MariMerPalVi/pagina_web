@@ -31,6 +31,10 @@ function public_header(string $title, string $active = 'inicio', string $descrip
       <div>
         <a href="tel:<?= e(str_replace(' ', '', contact_phone())) ?>"><?= e(contact_phone()) ?></a>
         <a href="mailto:<?= e(contact_email()) ?>"><?= e(contact_email()) ?></a>
+        <a class="top-social-link" href="<?= e(whatsapp_link('Hola FALEX, quiero información.')) ?>" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp"><?= icon_svg('whatsapp') ?></a>
+        <?php foreach (social_links() as $name => $link): ?>
+          <a class="top-social-link" href="<?= e($link) ?>" target="_blank" rel="noopener" aria-label="<?= e($name) ?>" title="<?= e($name) ?>"><?= icon_svg(strtolower($name)) ?></a>
+        <?php endforeach; ?>
       </div>
       <a href="<?= e(url('catalogo.php')) ?>">Ver productos</a>
     </div>
@@ -45,7 +49,7 @@ function public_header(string $title, string $active = 'inicio', string $descrip
           <a class="<?= $active === $key ? 'active' : '' ?>" href="<?= e(url($href)) ?>"><?= e($label) ?></a>
         <?php endforeach; ?>
       </div>
-      <a class="btn btn-primary nav-cta" href="<?= e(whatsapp_link('Hola FALEX, quiero solicitar una cotización.')) ?>" target="_blank" rel="noopener">Solicitar cotización</a>
+      <a class="btn btn-primary nav-cta" href="<?= e(url('contacto.php#cotizacion')) ?>">Solicitar cotización</a>
     </nav>
   </header>
     <?php
@@ -73,7 +77,7 @@ function public_cta(): void
       <h2>Haz realidad el diseño que tienes en mente. Solicita tu cotización hoy mismo.</h2>
     </div>
     <div class="cta-actions">
-      <a class="btn btn-light" href="<?= e(whatsapp_link('Hola FALEX, quiero cotizar un proyecto textil.')) ?>" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="btn btn-light" href="<?= e(url('contacto.php#cotizacion')) ?>">Solicitar cotización</a>
       <a class="btn btn-outline-light" href="tel:<?= e(str_replace(' ', '', contact_phone())) ?>">Llamar</a>
       <a class="btn btn-outline-light" href="mailto:<?= e(contact_email()) ?>">Correo</a>
     </div>
@@ -84,7 +88,14 @@ function public_cta(): void
 function public_footer(): void
 {
     $socialLinks = social_links();
-    $footerLinks = footer_links();
+    $footerLinks = [
+        ['Inicio', 'index.php', 'home'],
+        ['Nosotros', 'nosotros.php', 'factory'],
+        ['Servicios', 'servicios.php', 'services'],
+        ['Productos', 'catalogo.php', 'catalog'],
+        ['Cotización', 'contacto.php#cotizacion', 'contact'],
+        ['Contacto', 'contacto.php', 'contact'],
+    ];
     ?>
   <a class="whatsapp-float" href="<?= e(whatsapp_link('Hola FALEX, quiero información sobre sus servicios.')) ?>" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">WhatsApp</a>
 
@@ -96,9 +107,8 @@ function public_footer(): void
     </div>
     <div class="footer-nav">
       <div class="footer-page-links">
-        <?php foreach ($footerLinks as $link): ?>
-          <?php $footerUrl = preg_match('~^[a-z][a-z0-9+.-]*:~i', $link['url']) ? $link['url'] : url($link['url']); ?>
-          <a href="<?= e($footerUrl) ?>"><?= icon_svg('link') ?><span><?= e($link['label']) ?></span></a>
+        <?php foreach ($footerLinks as [$label, $href, $icon]): ?>
+          <a href="<?= e(url($href)) ?>"><?= icon_svg($icon) ?><span><?= e($label) ?></span></a>
         <?php endforeach; ?>
       </div>
       <div class="footer-links">

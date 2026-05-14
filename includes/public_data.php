@@ -7,15 +7,15 @@ require_once __DIR__ . '/../config/database.php';
 function falex_services(): array
 {
     return [
-        ['Cuellos escolares', 'Fabricamos cuellos cómodos, resistentes y personalizados para uniformes escolares.'],
-        ['Cuellos empresariales', 'Soluciones para prendas corporativas con colores y acabados alineados a tu marca.'],
-        ['Bordados de sellos institucionales', 'Bordamos sellos, escudos, nombres y logotipos con presentación profesional.'],
-        ['Prendas en telas de punto', 'Confeccionamos prendas para hombres, mujeres y niños con materiales seleccionados.'],
-        ['Equipos deportivos sublimados', 'Uniformes deportivos con diseños vivos, personalizados y listos para competir.'],
-        ['Equipos deportivos estampados', 'Camisetas y conjuntos con nombres, números, marcas y detalles estampados.'],
-        ['Camisetas personalizadas', 'Camisetas para eventos, promociones, grupos, equipos, empresas y marcas.'],
-        ['Uniformes institucionales', 'Prendas para colegios, escuelas, empresas y organizaciones que cuidan su imagen.'],
-        ['Prendas para hombres, mujeres y niños', 'Producción textil versátil para diferentes públicos, tallas y necesidades.'],
+        ['Cuellos escolares', 'Fabricamos cuellos cómodos, resistentes y personalizados para uniformes escolares.', 'school'],
+        ['Cuellos empresariales', 'Soluciones para prendas corporativas con colores y acabados alineados a tu marca.', 'briefcase'],
+        ['Bordados de sellos institucionales', 'Bordamos sellos, escudos, nombres y logotipos con presentación profesional.', 'badge'],
+        ['Prendas en telas de punto', 'Confeccionamos prendas para hombres, mujeres y niños con materiales seleccionados.', 'shirt'],
+        ['Equipos deportivos sublimados', 'Uniformes deportivos con diseños vivos, personalizados y listos para competir.', 'shirt'],
+        ['Equipos deportivos estampados', 'Camisetas y conjuntos con nombres, números, marcas y detalles estampados.', 'services'],
+        ['Camisetas personalizadas', 'Camisetas para eventos, promociones, grupos, equipos, empresas y marcas.', 'shirt'],
+        ['Uniformes institucionales', 'Prendas para colegios, escuelas, empresas y organizaciones que cuidan su imagen.', 'factory'],
+        ['Prendas para hombres, mujeres y niños', 'Producción textil versátil para diferentes públicos, tallas y necesidades.', 'catalog'],
     ];
 }
 

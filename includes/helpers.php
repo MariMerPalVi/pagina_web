@@ -128,6 +128,7 @@ function icon_svg(string $name): string
         'instagram' => '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg>',
         'facebook' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-3 0-5 2-5 5v2H6v4h3v5h4v-5h3l1-4h-4V9c0-.6.4-1 1-1Z"></path></svg>',
         'tiktok' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4c.4 3 2.2 4.8 5 5v4c-1.8 0-3.4-.6-5-1.6V16a5 5 0 1 1-5-5c.4 0 .7 0 1 .1v4.1c-.3-.1-.6-.2-1-.2a1.9 1.9 0 1 0 1.9 1.9V4h3.1Z"></path></svg>',
+        'whatsapp' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19.2 6.1 16A8 8 0 1 1 9 18.2L5 19.2Z"></path><path d="M9.5 8.8c.2 2 1.8 3.7 3.8 4l1-1.1 2 .9c-.2 1.1-1 1.8-2.1 1.8-3.4-.1-6.2-2.8-6.3-6.2 0-1.1.7-1.9 1.8-2.1l.9 2-1.1.7Z"></path></svg>',
         'lock' => '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>',
         'home' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11 12 4l8 7"></path><path d="M6 10v10h12V10"></path></svg>',
         'link' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"></path><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"></path></svg>',
