@@ -94,10 +94,10 @@ admin_header('Categorías');
         <tbody>
           <?php foreach ($categories as $category): ?>
             <tr>
-              <td><strong><?= e($category['nombre']) ?></strong><small><?= e($category['descripcion']) ?></small></td>
-              <td><?= (int) $category['productos'] ?></td>
-              <td><span class="status <?= e($category['estado']) ?>"><?= e($category['estado']) ?></span></td>
-              <td class="actions">
+              <td data-label="Categoría"><strong><?= e($category['nombre']) ?></strong><small><?= e($category['descripcion']) ?></small></td>
+              <td data-label="Productos"><?= (int) $category['productos'] ?></td>
+              <td data-label="Estado"><span class="status <?= e($category['estado']) ?>"><?= e($category['estado']) ?></span></td>
+              <td class="actions" data-label="Acciones">
                 <a class="btn btn-small" href="<?= e(url('admin/categories.php?edit=' . (int) $category['id'])) ?>">Editar</a>
                 <form method="post">
                   <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">

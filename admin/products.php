@@ -40,12 +40,12 @@ admin_header('Productos');
       <tbody>
         <?php foreach ($products as $product): ?>
           <tr>
-            <td><img class="table-image" src="<?= e(product_image_url($product['imagen'])) ?>" alt="<?= e($product['nombre']) ?>"></td>
-            <td><strong><?= e($product['nombre']) ?></strong><small><?= e($product['creador'] ?? 'Sin creador') ?></small></td>
-            <td><?= e($product['categoria']) ?></td>
-            <td>$<?= number_format((float) $product['precio'], 2) ?></td>
-            <td><span class="status <?= e($product['estado']) ?>"><?= e($product['estado']) ?></span></td>
-            <td class="actions">
+            <td data-label="Imagen"><img class="table-image" src="<?= e(product_image_url($product['imagen'])) ?>" alt="<?= e($product['nombre']) ?>"></td>
+            <td data-label="Producto"><strong><?= e($product['nombre']) ?></strong><small><?= e($product['creador'] ?? 'Sin creador') ?></small></td>
+            <td data-label="Categoría"><?= e($product['categoria']) ?></td>
+            <td data-label="Precio">$<?= number_format((float) $product['precio'], 2) ?></td>
+            <td data-label="Estado"><span class="status <?= e($product['estado']) ?>"><?= e($product['estado']) ?></span></td>
+            <td class="actions" data-label="Acciones">
               <a class="btn btn-small" href="<?= e(url('admin/product_form.php?id=' . (int) $product['id'])) ?>">Editar</a>
               <form method="post">
                 <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">

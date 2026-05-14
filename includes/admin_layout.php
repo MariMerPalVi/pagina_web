@@ -54,6 +54,12 @@ function admin_header(string $title): void
       </a>
       <a class="btn btn-secondary btn-small" href="<?= e(url('logout.php')) ?>">Salir</a>
     </header>
+    <nav class="admin-mobile-menu" aria-label="Navegación móvil del panel">
+      <?php foreach ($menu as [$label, $href, $matches]): ?>
+        <a class="<?= in_array($current, $matches, true) ? 'active' : '' ?>" href="<?= e(url('admin/' . $href)) ?>"><?= e($label) ?></a>
+      <?php endforeach; ?>
+      <a href="<?= e(url('index.php')) ?>" target="_blank" rel="noopener">Ver sitio</a>
+    </nav>
     <header class="admin-topbar">
       <div>
         <p class="eyebrow">Panel interno</p>
