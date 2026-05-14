@@ -528,7 +528,7 @@ body.admin-body::before {
   background: #dcfce7;
 }
 
-.status.cerrada {
+.status.no_respondida {
   color: #475569;
   background: #e2e8f0;
 }

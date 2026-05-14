@@ -16,7 +16,7 @@ function ensure_quotes_table(): void
             producto VARCHAR(160) NOT NULL,
             mensaje TEXT NOT NULL,
             respuesta TEXT NULL,
-            estado ENUM("pendiente", "respondida", "cerrada") NOT NULL DEFAULT "pendiente",
+            estado ENUM("pendiente", "respondida", "no_respondida") NOT NULL DEFAULT "pendiente",
             respondido_por INT NULL,
             fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             fecha_respuesta TIMESTAMP NULL DEFAULT NULL,
@@ -27,6 +27,12 @@ function ensure_quotes_table(): void
 
 ensure_quotes_table();
 
+try {
+    db()->exec('UPDATE solicitudes_cotizacion SET estado = "no_respondida" WHERE estado = "cerrada"');
+    db()->exec('ALTER TABLE solicitudes_cotizacion MODIFY estado ENUM("pendiente", "respondida", "no_respondida") NOT NULL DEFAULT "pendiente"');
+} catch (Throwable) {
+}
+
 $viewId = (int) ($_GET['view'] ?? 0);
 $selected = null;
 
@@ -36,46 +42,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
     $id = (int) ($_POST['id'] ?? 0);
 
-    if ($action === 'close' && $id > 0) {
-        $stmt = db()->prepare('UPDATE solicitudes_cotizacion SET estado = "cerrada" WHERE id = ?');
-        $stmt->execute([$id]);
-        flash('success', 'Solicitud marcada como cerrada.');
-        redirect('admin/quotes.php');
-    }
+    if ($action === 'update_status' && $id > 0) {
+        $estado = $_POST['estado'] ?? 'pendiente';
+        $nota = trim($_POST['respuesta'] ?? '');
 
-    if ($action === 'respond' && $id > 0) {
-        $respuesta = trim($_POST['respuesta'] ?? '');
-
-        if ($respuesta === '') {
-            flash('error', 'Escribe una respuesta para enviar al cliente.');
-            redirect('admin/quotes.php?view=' . $id);
+        if (!in_array($estado, ['pendiente', 'respondida', 'no_respondida'], true)) {
+            $estado = 'pendiente';
         }
 
-        $stmt = db()->prepare('SELECT * FROM solicitudes_cotizacion WHERE id = ? LIMIT 1');
-        $stmt->execute([$id]);
-        $quote = $stmt->fetch();
+        $stmt = db()->prepare('UPDATE solicitudes_cotizacion SET respuesta = ?, estado = ?, respondido_por = ?, fecha_respuesta = NOW() WHERE id = ?');
+        $stmt->execute([$nota ?: null, $estado, current_user()['id'], $id]);
 
-        if (!$quote) {
-            flash('error', 'La solicitud no existe.');
-            redirect('admin/quotes.php');
-        }
-
-        if (empty($quote['correo'])) {
-            flash('error', 'Esta solicitud no tiene correo registrado.');
-            redirect('admin/quotes.php?view=' . $id);
-        }
-
-        $emailSent = send_email(
-            $quote['correo'],
-            'Respuesta a tu solicitud de cotización FALEX',
-            "Hola {$quote['nombre']},\n\n{$respuesta}\n\nSaludos,\nFALEX Fábrica Textil\n" . contact_phone(),
-            contact_email()
-        );
-
-        $stmt = db()->prepare('UPDATE solicitudes_cotizacion SET respuesta = ?, estado = "respondida", respondido_por = ?, fecha_respuesta = NOW() WHERE id = ?');
-        $stmt->execute([$respuesta, current_user()['id'], $id]);
-
-        flash($emailSent ? 'success' : 'error', $emailSent ? 'Respuesta enviada y guardada correctamente.' : 'La respuesta fue guardada, pero el servidor no confirmó el envío del correo.');
+        flash('success', 'Estado de la solicitud actualizado.');
         redirect('admin/quotes.php?view=' . $id);
     }
 }
@@ -94,7 +72,7 @@ admin_header('Cotizaciones');
   <div class="panel-heading">
     <div>
       <h2>Solicitudes recibidas</h2>
-      <p class="muted-text">Controla los mensajes enviados desde el formulario público y responde cotizaciones por correo.</p>
+      <p class="muted-text">Controla los mensajes enviados desde el formulario público y registra el estado de atención.</p>
     </div>
   </div>
 
@@ -107,17 +85,9 @@ admin_header('Cotizaciones');
             <td data-label="Cliente"><strong><?= e($quote['nombre']) ?></strong><small><?= e($quote['correo'] ?: $quote['telefono']) ?></small></td>
             <td data-label="Producto"><?= e($quote['producto']) ?></td>
             <td data-label="Fecha"><?= e(date('d/m/Y H:i', strtotime($quote['fecha_creacion']))) ?></td>
-            <td data-label="Estado"><span class="status <?= e($quote['estado']) ?>"><?= e($quote['estado']) ?></span></td>
+            <td data-label="Estado"><span class="status <?= e($quote['estado']) ?>"><?= e(str_replace('_', ' ', $quote['estado'])) ?></span></td>
             <td class="actions" data-label="Acciones">
-              <a class="btn btn-small" href="<?= e(url('admin/quotes.php?view=' . (int) $quote['id'])) ?>">Ver / responder</a>
-              <?php if ($quote['estado'] !== 'cerrada'): ?>
-                <form method="post" onsubmit="return confirm('¿Cerrar esta solicitud?')">
-                  <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-                  <input type="hidden" name="id" value="<?= (int) $quote['id'] ?>">
-                  <input type="hidden" name="action" value="close">
-                  <button class="btn btn-small" type="submit">Cerrar</button>
-                </form>
-              <?php endif; ?>
+              <a class="btn btn-small" href="<?= e(url('admin/quotes.php?view=' . (int) $quote['id'])) ?>">Ver / gestionar</a>
             </td>
           </tr>
         <?php endforeach; ?>
@@ -152,7 +122,7 @@ admin_header('Cotizaciones');
 
       <?php if (!empty($selected['respuesta'])): ?>
         <div class="quote-response">
-          <strong>Última respuesta enviada</strong>
+          <strong>Nota interna</strong>
           <p><?= nl2br(e($selected['respuesta'])) ?></p>
           <?php if (!empty($selected['fecha_respuesta'])): ?>
             <small><?= e(date('d/m/Y H:i', strtotime($selected['fecha_respuesta']))) ?><?= $selected['respondido_por_nombre'] ? ' · ' . e($selected['respondido_por_nombre']) : '' ?></small>
@@ -163,12 +133,19 @@ admin_header('Cotizaciones');
       <form class="admin-form" method="post">
         <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
         <input type="hidden" name="id" value="<?= (int) $selected['id'] ?>">
-        <input type="hidden" name="action" value="respond">
-        <label>Respuesta para el cliente
-          <textarea name="respuesta" rows="7" required placeholder="Escribe aquí la cotización, condiciones, tiempos de entrega o información solicitada."></textarea>
+        <input type="hidden" name="action" value="update_status">
+        <label>Estado de atención
+          <select name="estado" required>
+            <option value="pendiente" <?= $selected['estado'] === 'pendiente' ? 'selected' : '' ?>>Pendiente</option>
+            <option value="respondida" <?= $selected['estado'] === 'respondida' ? 'selected' : '' ?>>Respondida</option>
+            <option value="no_respondida" <?= $selected['estado'] === 'no_respondida' ? 'selected' : '' ?>>No respondida</option>
+          </select>
+        </label>
+        <label>Nota interna opcional
+          <textarea name="respuesta" rows="5" placeholder="Ejemplo: Se contactó por WhatsApp, falta confirmar tallas o cliente no respondió."><?= e($selected['respuesta'] ?? '') ?></textarea>
         </label>
         <div class="form-actions">
-          <button class="btn btn-primary" type="submit" <?= empty($selected['correo']) ? 'disabled' : '' ?>>Enviar respuesta por correo</button>
+          <button class="btn btn-primary" type="submit">Guardar estado</button>
           <a class="btn btn-secondary" href="<?= e(url('admin/quotes.php')) ?>">Cerrar</a>
         </div>
       </form>

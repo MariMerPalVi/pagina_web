@@ -13,12 +13,17 @@ CREATE TABLE IF NOT EXISTS solicitudes_cotizacion (
   producto VARCHAR(160) NOT NULL,
   mensaje TEXT NOT NULL,
   respuesta TEXT NULL,
-  estado ENUM('pendiente', 'respondida', 'cerrada') NOT NULL DEFAULT 'pendiente',
+  estado ENUM('pendiente', 'respondida', 'no_respondida') NOT NULL DEFAULT 'pendiente',
   respondido_por INT NULL,
   fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   fecha_respuesta TIMESTAMP NULL DEFAULT NULL,
   CONSTRAINT fk_solicitudes_usuario FOREIGN KEY (respondido_por) REFERENCES usuarios(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
+
+UPDATE solicitudes_cotizacion SET estado = 'no_respondida' WHERE estado = 'cerrada';
+
+ALTER TABLE solicitudes_cotizacion
+  MODIFY estado ENUM('pendiente', 'respondida', 'no_respondida') NOT NULL DEFAULT 'pendiente';
 
 INSERT INTO configuraciones (clave, valor)
 SELECT 'social_instagram', ''

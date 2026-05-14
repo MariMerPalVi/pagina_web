@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS solicitudes_cotizacion (
   producto VARCHAR(160) NOT NULL,
   mensaje TEXT NOT NULL,
   respuesta TEXT NULL,
-  estado ENUM('pendiente', 'respondida', 'cerrada') NOT NULL DEFAULT 'pendiente',
+  estado ENUM('pendiente', 'respondida', 'no_respondida') NOT NULL DEFAULT 'pendiente',
   respondido_por INT NULL,
   fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   fecha_respuesta TIMESTAMP NULL DEFAULT NULL,
