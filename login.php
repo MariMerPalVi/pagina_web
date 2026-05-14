@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="login-page">
   <main class="login-card">
     <a class="brand center-brand" href="index.php">
-      <img src="assets/logo-falex.svg" alt="FALEX" width="76" height="76">
+      <img src="assets/LOGO.PNG" alt="FALEX" width="76" height="76">
       <span><strong>FALEX</strong><small>Panel interno</small></span>
     </a>
     <h1>Iniciar sesión</h1>

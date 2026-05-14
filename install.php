@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="install-page">
   <main class="install-card">
-    <img src="assets/logo-falex.svg" alt="FALEX" width="90" height="90">
+    <img src="assets/LOGO.png" alt="FALEX" width="90" height="90">
     <h1>Instalar sistema FALEX</h1>
     <p>Este instalador crea la base de datos, tablas, categorías iniciales y usuarios de prueba para XAMPP.</p>
 

@@ -36,7 +36,7 @@ function public_header(string $title, string $active = 'inicio', string $descrip
     </div>
     <nav class="navbar" aria-label="Navegación principal">
       <a class="brand" href="<?= e(url('index.php')) ?>">
-        <img src="<?= e(url('assets/logo-falex.svg')) ?>" alt="FALEX Fábrica Textil" width="72" height="72">
+        <img src="<?= e(url('assets/LOGO.png')) ?>" alt="FALEX Fábrica Textil" width="72" height="72">
         <span><strong>FALEX</strong><small>Fábrica Textil</small></span>
       </a>
       <button class="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>

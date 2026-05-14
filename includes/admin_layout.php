@@ -34,7 +34,7 @@ function admin_header(string $title): void
 <body class="admin-body">
   <aside class="admin-sidebar">
     <a class="brand admin-brand" href="<?= e(url('admin/index.php')) ?>">
-      <img src="<?= e(url('assets/logo-falex.svg')) ?>" alt="FALEX" width="62" height="62">
+      <img src="<?= e(url('assets/LOGO.png')) ?>" alt="FALEX" width="62" height="62">
       <span><strong>FALEX</strong><small><?= e($user['rol']) ?></small></span>
     </a>
     <nav class="admin-menu" aria-label="Panel administrativo">
@@ -50,7 +50,7 @@ function admin_header(string $title): void
   <main class="admin-main">
     <header class="admin-mobilebar">
       <a class="brand" href="<?= e(url('admin/index.php')) ?>">
-        <img src="<?= e(url('assets/logo-falex.svg')) ?>" alt="FALEX" width="48" height="48">
+        <img src="<?= e(url('assets/LOGO.png')) ?>" alt="FALEX" width="48" height="48">
         <span><strong>FALEX</strong><small>Panel interno</small></span>
       </a>
       <a class="btn btn-secondary btn-small" href="<?= e(url('logout.php')) ?>">Salir</a>
