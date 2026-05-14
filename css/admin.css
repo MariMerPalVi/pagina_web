@@ -433,13 +433,13 @@ body.admin-body::before {
 .admin-table {
   width: 100%;
   min-width: 780px;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 8px;
 }
 
 .admin-table th,
 .admin-table td {
-  padding: 15px 12px;
-  border-bottom: 1px solid #eee9e0;
+  padding: 16px 12px;
   text-align: left;
   vertical-align: middle;
 }
@@ -454,6 +454,25 @@ body.admin-body::before {
 
 .admin-table tbody tr:hover {
   background: #fbfaf7;
+}
+
+.admin-table tbody tr {
+  background: #fff;
+}
+
+.admin-table tbody td {
+  border-top: 1px solid #eee9e0;
+  border-bottom: 1px solid #eee9e0;
+}
+
+.admin-table tbody td:first-child {
+  border-left: 1px solid #eee9e0;
+  border-radius: 10px 0 0 10px;
+}
+
+.admin-table tbody td:last-child {
+  border-right: 1px solid #eee9e0;
+  border-radius: 0 10px 10px 0;
 }
 
 .admin-table td strong,
@@ -579,6 +598,26 @@ body.admin-body::before {
   color: var(--admin-muted);
 }
 
+.order-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.order-images a {
+  overflow: hidden;
+  border: 1px solid var(--admin-line);
+  border-radius: 10px;
+  background: var(--admin-soft);
+}
+
+.order-images img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
 .work-order-box {
   display: grid;
   gap: 16px;
@@ -681,11 +720,11 @@ body.admin-body::before {
   position: relative;
   z-index: 1;
   width: min(100%, 560px);
-  max-height: min(86vh, 820px);
+  max-height: min(88vh, 860px);
   overflow-y: auto;
-  padding: 22px;
+  padding: 24px;
   border: 1px solid var(--admin-line);
-  border-radius: 14px;
+  border-radius: 16px;
   background: #fff;
   box-shadow: 0 28px 70px rgba(18, 26, 36, 0.24);
 }
@@ -695,6 +734,9 @@ body.admin-body::before {
 }
 
 .modal-heading {
+  position: sticky;
+  top: -24px;
+  z-index: 2;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -702,6 +744,7 @@ body.admin-body::before {
   margin-bottom: 18px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--admin-line);
+  background: #fff;
 }
 
 .modal-heading h2 {
@@ -957,6 +1000,13 @@ body.admin-body::before {
     border: 1px solid var(--admin-line);
     border-radius: 12px;
     background: #fff;
+  }
+
+  .admin-table tbody td,
+  .admin-table tbody td:first-child,
+  .admin-table tbody td:last-child {
+    border: 0;
+    border-radius: 0;
   }
 
   .admin-table td {

@@ -82,9 +82,11 @@ $flashes = get_flashes();
         <li><strong>Dirección:</strong> <?= e(contact_address()) ?></li>
         <?php if ($socialLinks): ?>
           <li><strong>Redes:</strong>
-            <?php $socialIndex = 0; foreach ($socialLinks as $name => $link): ?>
-              <?= $socialIndex++ > 0 ? ' · ' : '' ?><a href="<?= e($link) ?>" target="_blank" rel="noopener"><?= e($name) ?></a>
+            <span class="inline-social-icons">
+            <?php foreach ($socialLinks as $name => $link): ?>
+              <a class="footer-icon-link" href="<?= e($link) ?>" target="_blank" rel="noopener" aria-label="<?= e($name) ?>" title="<?= e($name) ?>"><?= icon_svg(strtolower($name)) ?></a>
             <?php endforeach; ?>
+            </span>
           </li>
         <?php endif; ?>
       </ul>

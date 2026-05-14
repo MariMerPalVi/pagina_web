@@ -20,3 +20,39 @@ WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'contact_email');
 INSERT INTO configuraciones (clave, valor)
 SELECT 'contact_address', 'Quito, Ecuador'
 WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'contact_address');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'social_instagram', ''
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'social_instagram');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'social_facebook', ''
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'social_facebook');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'social_tiktok', ''
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'social_tiktok');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'footer_link_1_label', 'Inicio'
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'footer_link_1_label');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'footer_link_1_url', 'index.php'
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'footer_link_1_url');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'footer_link_2_label', 'Catálogo'
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'footer_link_2_label');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'footer_link_2_url', 'catalogo.php'
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'footer_link_2_url');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'footer_link_3_label', 'Contacto'
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'footer_link_3_label');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'footer_link_3_url', 'contacto.php'
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'footer_link_3_url');

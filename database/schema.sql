@@ -77,3 +77,11 @@ CREATE TABLE IF NOT EXISTS ordenes_trabajo (
   CONSTRAINT fk_ordenes_asignado FOREIGN KEY (asignado_a) REFERENCES usuarios(id) ON DELETE SET NULL,
   CONSTRAINT fk_ordenes_creador FOREIGN KEY (creado_por) REFERENCES usuarios(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS ordenes_trabajo_imagenes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  orden_id INT NOT NULL,
+  imagen VARCHAR(255) NOT NULL,
+  fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_ordenes_imagenes_orden FOREIGN KEY (orden_id) REFERENCES ordenes_trabajo(id) ON DELETE CASCADE
+) ENGINE=InnoDB;

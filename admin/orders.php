@@ -48,6 +48,16 @@ function ensure_orders_table(): void
             CONSTRAINT fk_ordenes_creador FOREIGN KEY (creado_por) REFERENCES usuarios(id) ON DELETE SET NULL
         ) ENGINE=InnoDB'
     );
+
+    db()->exec(
+        'CREATE TABLE IF NOT EXISTS ordenes_trabajo_imagenes (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            orden_id INT NOT NULL,
+            imagen VARCHAR(255) NOT NULL,
+            fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            CONSTRAINT fk_ordenes_imagenes_orden FOREIGN KEY (orden_id) REFERENCES ordenes_trabajo(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB'
+    );
 }
 
 ensure_orders_quotes_table();
@@ -55,6 +65,7 @@ ensure_orders_table();
 
 $viewId = (int) ($_GET['view'] ?? 0);
 $selected = null;
+$selectedImages = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf();
@@ -85,6 +96,12 @@ if ($viewId > 0) {
     );
     $stmt->execute([$viewId]);
     $selected = $stmt->fetch();
+
+    if ($selected) {
+        $stmt = db()->prepare('SELECT imagen FROM ordenes_trabajo_imagenes WHERE orden_id = ? ORDER BY id');
+        $stmt->execute([$viewId]);
+        $selectedImages = $stmt->fetchAll();
+    }
 }
 
 $orders = db()->query(
@@ -153,6 +170,16 @@ admin_header('Órdenes');
         <p><strong>Detalles de producción:</strong></p>
         <div class="quote-message"><?= nl2br(e($selected['detalles'])) ?></div>
       </div>
+
+      <?php if ($selectedImages): ?>
+        <div class="order-images">
+          <?php foreach ($selectedImages as $image): ?>
+            <a href="<?= e(order_image_url($image['imagen'])) ?>" target="_blank" rel="noopener">
+              <img src="<?= e(order_image_url($image['imagen'])) ?>" alt="Imagen de referencia de la orden">
+            </a>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
 
       <form class="admin-form" method="post">
         <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">

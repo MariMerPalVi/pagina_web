@@ -84,16 +84,29 @@ function public_cta(): void
 function public_footer(): void
 {
     $socialLinks = social_links();
+    $footerLinks = footer_links();
     ?>
   <a class="whatsapp-float" href="<?= e(whatsapp_link('Hola FALEX, quiero información sobre sus servicios.')) ?>" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">WhatsApp</a>
 
   <footer class="site-footer">
-    <p>© <?= date('Y') ?> FALEX Fábrica Textil. Confección y personalización de prendas.</p>
-    <div class="footer-links">
-      <?php foreach ($socialLinks as $name => $link): ?>
-        <a href="<?= e($link) ?>" target="_blank" rel="noopener"><?= e($name) ?></a>
-      <?php endforeach; ?>
-      <a href="<?= e(url('login.php')) ?>">Acceso interno</a>
+    <div class="footer-brand">
+      <strong>FALEX Fábrica Textil</strong>
+      <p><?= e(contact_phone()) ?> · <?= e(contact_email()) ?> · <?= e(contact_address()) ?></p>
+      <p>© <?= date('Y') ?> Confección y personalización de prendas.</p>
+    </div>
+    <div class="footer-nav">
+      <div class="footer-page-links">
+        <?php foreach ($footerLinks as $link): ?>
+          <?php $footerUrl = preg_match('~^[a-z][a-z0-9+.-]*:~i', $link['url']) ? $link['url'] : url($link['url']); ?>
+          <a href="<?= e($footerUrl) ?>"><?= icon_svg('link') ?><span><?= e($link['label']) ?></span></a>
+        <?php endforeach; ?>
+      </div>
+      <div class="footer-links">
+        <?php foreach ($socialLinks as $name => $link): ?>
+          <a class="footer-icon-link" href="<?= e($link) ?>" target="_blank" rel="noopener" aria-label="<?= e($name) ?>" title="<?= e($name) ?>"><?= icon_svg(strtolower($name)) ?></a>
+        <?php endforeach; ?>
+        <a class="footer-internal-link" href="<?= e(url('login.php')) ?>"><?= icon_svg('lock') ?><span>Acceso interno</span></a>
+      </div>
     </div>
   </footer>
 

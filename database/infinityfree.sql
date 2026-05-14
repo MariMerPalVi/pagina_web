@@ -75,6 +75,14 @@ CREATE TABLE IF NOT EXISTS ordenes_trabajo (
   CONSTRAINT fk_ordenes_creador FOREIGN KEY (creado_por) REFERENCES usuarios(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS ordenes_trabajo_imagenes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  orden_id INT NOT NULL,
+  imagen VARCHAR(255) NOT NULL,
+  fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_ordenes_imagenes_orden FOREIGN KEY (orden_id) REFERENCES ordenes_trabajo(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
 INSERT INTO categorias (nombre, descripcion, estado)
 SELECT 'Cuellos escolares', 'Cuellos para uniformes escolares personalizados.', 'activo'
 WHERE NOT EXISTS (SELECT 1 FROM categorias WHERE nombre = 'Cuellos escolares');
@@ -146,3 +154,27 @@ WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'social_facebook')
 INSERT INTO configuraciones (clave, valor)
 SELECT 'social_tiktok', ''
 WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'social_tiktok');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'footer_link_1_label', 'Inicio'
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'footer_link_1_label');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'footer_link_1_url', 'index.php'
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'footer_link_1_url');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'footer_link_2_label', 'Catálogo'
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'footer_link_2_label');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'footer_link_2_url', 'catalogo.php'
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'footer_link_2_url');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'footer_link_3_label', 'Contacto'
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'footer_link_3_label');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'footer_link_3_url', 'contacto.php'
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'footer_link_3_url');

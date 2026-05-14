@@ -32,10 +32,10 @@ public_header('Inicio', 'inicio');
   </section>
 
   <section class="trust-strip" aria-label="Especialidades de FALEX">
-    <div><span>01</span><strong>Uniformes escolares</strong></div>
-    <div><span>02</span><strong>Ropa corporativa</strong></div>
-    <div><span>03</span><strong>Equipos deportivos</strong></div>
-    <div><span>04</span><strong>Bordados y sellos</strong></div>
+    <div><span class="feature-icon"><?= icon_svg('school') ?></span><small>01</small><strong>Uniformes escolares</strong></div>
+    <div><span class="feature-icon"><?= icon_svg('briefcase') ?></span><small>02</small><strong>Ropa corporativa</strong></div>
+    <div><span class="feature-icon"><?= icon_svg('shirt') ?></span><small>03</small><strong>Equipos deportivos</strong></div>
+    <div><span class="feature-icon"><?= icon_svg('badge') ?></span><small>04</small><strong>Bordados y sellos</strong></div>
   </section>
 
   <section class="section split-section">
@@ -51,11 +51,11 @@ public_header('Inicio', 'inicio');
 
   <section class="section module-grid-section">
     <div class="module-grid">
-      <a href="<?= e(url('nosotros.php')) ?>"><span>Nosotros</span><strong>Conoce la fábrica</strong></a>
-      <a href="<?= e(url('servicios.php')) ?>"><span>Servicios</span><strong>Lo que producimos</strong></a>
-      <a href="<?= e(url('catalogo.php')) ?>"><span>Catálogo</span><strong>Productos activos</strong></a>
-      <a href="<?= e(url('galeria.php')) ?>"><span>Galería</span><strong>Trabajos realizados</strong></a>
-      <a href="<?= e(url('contacto.php')) ?>"><span>Contacto</span><strong>Cotiza tu pedido</strong></a>
+      <a href="<?= e(url('nosotros.php')) ?>"><i><?= icon_svg('factory') ?></i><span>Nosotros</span><strong>Conoce la fábrica</strong></a>
+      <a href="<?= e(url('servicios.php')) ?>"><i><?= icon_svg('services') ?></i><span>Servicios</span><strong>Lo que producimos</strong></a>
+      <a href="<?= e(url('catalogo.php')) ?>"><i><?= icon_svg('catalog') ?></i><span>Catálogo</span><strong>Productos activos</strong></a>
+      <a href="<?= e(url('galeria.php')) ?>"><i><?= icon_svg('gallery') ?></i><span>Galería</span><strong>Trabajos realizados</strong></a>
+      <a href="<?= e(url('contacto.php')) ?>"><i><?= icon_svg('contact') ?></i><span>Contacto</span><strong>Cotiza tu pedido</strong></a>
     </div>
   </section>
 

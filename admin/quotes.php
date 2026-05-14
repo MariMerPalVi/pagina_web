@@ -49,6 +49,16 @@ function ensure_work_orders_table(): void
             CONSTRAINT fk_ordenes_creador FOREIGN KEY (creado_por) REFERENCES usuarios(id) ON DELETE SET NULL
         ) ENGINE=InnoDB'
     );
+
+    db()->exec(
+        'CREATE TABLE IF NOT EXISTS ordenes_trabajo_imagenes (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            orden_id INT NOT NULL,
+            imagen VARCHAR(255) NOT NULL,
+            fecha_creacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            CONSTRAINT fk_ordenes_imagenes_orden FOREIGN KEY (orden_id) REFERENCES ordenes_trabajo(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB'
+    );
 }
 
 ensure_quotes_table();
@@ -132,6 +142,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $asignadoA > 0 ? $asignadoA : null,
             current_user()['id'],
         ]);
+        $orderId = (int) db()->lastInsertId();
+
+        $images = upload_order_images($_FILES['imagenes'] ?? []);
+        if ($images) {
+            $imageStmt = db()->prepare('INSERT INTO ordenes_trabajo_imagenes (orden_id, imagen) VALUES (?, ?)');
+            foreach ($images as $image) {
+                $imageStmt->execute([$orderId, $image]);
+            }
+        }
 
         flash('success', 'Orden de trabajo creada correctamente.');
         redirect('admin/orders.php');
@@ -253,7 +272,7 @@ admin_header('Cotizaciones');
             </div>
             <a class="btn btn-secondary" href="<?= e(url('admin/orders.php')) ?>">Ver órdenes</a>
           <?php else: ?>
-            <form class="admin-form" method="post">
+            <form class="admin-form" method="post" enctype="multipart/form-data">
               <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
               <input type="hidden" name="id" value="<?= (int) $selected['id'] ?>">
               <input type="hidden" name="action" value="create_order">
@@ -273,6 +292,10 @@ admin_header('Cotizaciones');
               </div>
               <label>Detalles de producción
                 <textarea name="detalles" rows="6" required><?= e("Solicitud del cliente:\n" . $selected['mensaje'] . (!empty($selected['respuesta']) ? "\n\nNota interna:\n" . $selected['respuesta'] : '')) ?></textarea>
+              </label>
+              <label>Imágenes de referencia
+                <input type="file" name="imagenes[]" accept="image/jpeg,image/png,image/webp" multiple>
+                <small>Puedes subir fotos, referencias de diseño, logos o capturas. Máximo 3 MB por imagen.</small>
               </label>
               <div class="form-actions">
                 <button class="btn btn-primary" type="submit">Crear orden de trabajo</button>
