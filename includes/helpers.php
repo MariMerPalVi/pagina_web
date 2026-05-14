@@ -21,6 +21,64 @@ const CONTACT_EMAIL = 'ventas@falextextil.com';
 const CONTACT_PHONE = '+593 99 999 9999';
 const CONTACT_ADDRESS = 'Quito, Ecuador';
 
+function default_site_settings(): array
+{
+    return [
+        'whatsapp_number' => WHATSAPP_NUMBER,
+        'contact_phone' => CONTACT_PHONE,
+        'contact_email' => CONTACT_EMAIL,
+        'contact_address' => CONTACT_ADDRESS,
+    ];
+}
+
+function site_setting(string $key): string
+{
+    static $settings = null;
+    $defaults = default_site_settings();
+
+    if (!array_key_exists($key, $defaults)) {
+        return '';
+    }
+
+    if ($settings === null) {
+        $settings = $defaults;
+
+        try {
+            require_once __DIR__ . '/../config/database.php';
+            $rows = db()->query('SELECT clave, valor FROM configuraciones')->fetchAll();
+            foreach ($rows as $row) {
+                if (array_key_exists($row['clave'], $settings) && trim((string) $row['valor']) !== '') {
+                    $settings[$row['clave']] = (string) $row['valor'];
+                }
+            }
+        } catch (Throwable) {
+            $settings = $defaults;
+        }
+    }
+
+    return $settings[$key];
+}
+
+function whatsapp_number(): string
+{
+    return preg_replace('/\D+/', '', site_setting('whatsapp_number'));
+}
+
+function contact_phone(): string
+{
+    return site_setting('contact_phone');
+}
+
+function contact_email(): string
+{
+    return site_setting('contact_email');
+}
+
+function contact_address(): string
+{
+    return site_setting('contact_address');
+}
+
 function e(?string $value): string
 {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
@@ -74,7 +132,7 @@ function verify_csrf(): void
 
 function whatsapp_link(string $message): string
 {
-    return 'https://wa.me/' . WHATSAPP_NUMBER . '?text=' . rawurlencode($message);
+    return 'https://wa.me/' . whatsapp_number() . '?text=' . rawurlencode($message);
 }
 
 function product_image_url(?string $image): string

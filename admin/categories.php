@@ -25,6 +25,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect('admin/categories.php');
     }
 
+    if ($action === 'delete' && $id > 0) {
+        require_admin();
+
+        try {
+            $stmt = db()->prepare('DELETE FROM categorias WHERE id = ?');
+            $stmt->execute([$id]);
+            flash('success', 'Categoría eliminada.');
+        } catch (PDOException) {
+            flash('error', 'No se puede eliminar una categoría con productos asociados. Desactívala o cambia esos productos de categoría primero.');
+        }
+
+        redirect('admin/categories.php');
+    }
+
     $nombre = trim($_POST['nombre'] ?? '');
     $descripcion = trim($_POST['descripcion'] ?? '');
     $estado = ($_POST['estado'] ?? 'activo') === 'inactivo' ? 'inactivo' : 'activo';
@@ -91,6 +105,14 @@ admin_header('Categorías');
                   <input type="hidden" name="action" value="toggle">
                   <button class="btn btn-small" type="submit"><?= $category['estado'] === 'activo' ? 'Desactivar' : 'Activar' ?></button>
                 </form>
+                <?php if (is_admin()): ?>
+                  <form method="post" onsubmit="return confirm('¿Eliminar esta categoría?')">
+                    <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                    <input type="hidden" name="id" value="<?= (int) $category['id'] ?>">
+                    <input type="hidden" name="action" value="delete">
+                    <button class="btn btn-danger btn-small" type="submit">Eliminar</button>
+                  </form>
+                <?php endif; ?>
               </td>
             </tr>
           <?php endforeach; ?>

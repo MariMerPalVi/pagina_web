@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = (int) ($_POST['id'] ?? 0);
 
     if ($action === 'delete' && $id > 0) {
+        require_admin();
         $stmt = db()->prepare('DELETE FROM productos WHERE id = ?');
         $stmt->execute([$id]);
         flash('success', 'Producto eliminado correctamente.');
@@ -52,12 +53,14 @@ admin_header('Productos');
                 <input type="hidden" name="action" value="toggle">
                 <button class="btn btn-small" type="submit"><?= $product['estado'] === 'activo' ? 'Desactivar' : 'Activar' ?></button>
               </form>
-              <form method="post" onsubmit="return confirm('¿Eliminar este producto?')">
-                <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-                <input type="hidden" name="id" value="<?= (int) $product['id'] ?>">
-                <input type="hidden" name="action" value="delete">
-                <button class="btn btn-danger btn-small" type="submit">Eliminar</button>
-              </form>
+              <?php if (is_admin()): ?>
+                <form method="post" onsubmit="return confirm('¿Eliminar este producto?')">
+                  <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                  <input type="hidden" name="id" value="<?= (int) $product['id'] ?>">
+                  <input type="hidden" name="action" value="delete">
+                  <button class="btn btn-danger btn-small" type="submit">Eliminar</button>
+                </form>
+              <?php endif; ?>
             </td>
           </tr>
         <?php endforeach; ?>

@@ -34,3 +34,10 @@ CREATE TABLE IF NOT EXISTS productos (
   CONSTRAINT fk_productos_categoria FOREIGN KEY (categoria_id) REFERENCES categorias(id),
   CONSTRAINT fk_productos_usuario FOREIGN KEY (creado_por) REFERENCES usuarios(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS configuraciones (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  clave VARCHAR(80) NOT NULL UNIQUE,
+  valor TEXT NOT NULL,
+  fecha_actualizacion TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;

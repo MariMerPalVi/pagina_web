@@ -91,6 +91,26 @@ Desde ahí puedes administrar:
 - Empleados.
 - Imágenes del catálogo.
 - Galería pública basada en productos activos con imagen.
+- Configuración de WhatsApp, teléfono, correo y dirección.
+
+## Actualizar una base existente
+
+Si ya habías importado la base antes de agregar el módulo de configuración, importa en phpMyAdmin:
+
+```text
+database/migration_configuraciones.sql
+```
+
+Ese archivo crea la tabla `configuraciones` y agrega valores iniciales. Después podrás editarlos desde:
+
+```text
+/admin/settings.php
+```
+
+## Permisos
+
+- Administrador: puede crear, editar, activar, desactivar y eliminar productos/categorías. También puede gestionar empleados y configuración.
+- Empleado: puede trabajar con productos/categorías, pero no puede eliminar registros ni acceder a funciones exclusivas del administrador.
 
 ## Formularios
 

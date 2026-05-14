@@ -32,6 +32,13 @@ CREATE TABLE IF NOT EXISTS productos (
   CONSTRAINT fk_productos_usuario FOREIGN KEY (creado_por) REFERENCES usuarios(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS configuraciones (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  clave VARCHAR(80) NOT NULL UNIQUE,
+  valor TEXT NOT NULL,
+  fecha_actualizacion TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
 INSERT INTO categorias (nombre, descripcion, estado)
 SELECT 'Cuellos escolares', 'Cuellos para uniformes escolares personalizados.', 'activo'
 WHERE NOT EXISTS (SELECT 1 FROM categorias WHERE nombre = 'Cuellos escolares');
@@ -75,3 +82,19 @@ WHERE NOT EXISTS (SELECT 1 FROM categorias WHERE nombre = 'Estampados');
 INSERT INTO usuarios (nombre, correo, usuario, password_hash, rol, estado)
 SELECT 'Administrador FALEX', 'ventas@falextextil.com', 'admin', '$2y$10$wiG68jVpG6W94ollFok9tuvricaB88.OmdPIq2zZLCBHli2DlKyhi', 'administrador', 'activo'
 WHERE NOT EXISTS (SELECT 1 FROM usuarios WHERE usuario = 'admin');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'whatsapp_number', '593999999999'
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'whatsapp_number');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'contact_phone', '+593 99 999 9999'
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'contact_phone');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'contact_email', 'ventas@falextextil.com'
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'contact_email');
+
+INSERT INTO configuraciones (clave, valor)
+SELECT 'contact_address', 'Quito, Ecuador'
+WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = 'contact_address');

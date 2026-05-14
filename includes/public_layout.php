@@ -29,8 +29,8 @@ function public_header(string $title, string $active = 'inicio', string $descrip
   <header class="site-header">
     <div class="top-contact-bar">
       <div>
-        <a href="tel:<?= e(str_replace(' ', '', CONTACT_PHONE)) ?>"><?= e(CONTACT_PHONE) ?></a>
-        <a href="mailto:<?= e(CONTACT_EMAIL) ?>"><?= e(CONTACT_EMAIL) ?></a>
+        <a href="tel:<?= e(str_replace(' ', '', contact_phone())) ?>"><?= e(contact_phone()) ?></a>
+        <a href="mailto:<?= e(contact_email()) ?>"><?= e(contact_email()) ?></a>
       </div>
       <a href="<?= e(url('catalogo.php')) ?>">Ver productos</a>
     </div>
@@ -74,8 +74,8 @@ function public_cta(): void
     </div>
     <div class="cta-actions">
       <a class="btn btn-light" href="<?= e(whatsapp_link('Hola FALEX, quiero cotizar un proyecto textil.')) ?>" target="_blank" rel="noopener">WhatsApp</a>
-      <a class="btn btn-outline-light" href="tel:<?= e(str_replace(' ', '', CONTACT_PHONE)) ?>">Llamar</a>
-      <a class="btn btn-outline-light" href="mailto:<?= e(CONTACT_EMAIL) ?>">Correo</a>
+      <a class="btn btn-outline-light" href="tel:<?= e(str_replace(' ', '', contact_phone())) ?>">Llamar</a>
+      <a class="btn btn-outline-light" href="mailto:<?= e(contact_email()) ?>">Correo</a>
     </div>
   </section>
     <?php

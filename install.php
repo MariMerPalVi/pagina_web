@@ -46,8 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $employeePassword = password_hash('empleado123', PASSWORD_DEFAULT);
 
         $stmt = $db->prepare('INSERT INTO usuarios (nombre, correo, usuario, password_hash, rol, estado) SELECT ?, ?, ?, ?, ?, "activo" WHERE NOT EXISTS (SELECT 1 FROM usuarios WHERE usuario = ?)');
-        $stmt->execute(['Administrador FALEX', CONTACT_EMAIL, 'admin', $adminPassword, 'administrador', 'admin']);
+        $stmt->execute(['Administrador FALEX', contact_email(), 'admin', $adminPassword, 'administrador', 'admin']);
         $stmt->execute(['Empleado Demo', 'empleado@falextextil.com', 'empleado', $employeePassword, 'empleado', 'empleado']);
+
+        $stmt = $db->prepare('INSERT INTO configuraciones (clave, valor) SELECT ?, ? WHERE NOT EXISTS (SELECT 1 FROM configuraciones WHERE clave = ?)');
+        foreach (default_site_settings() as $key => $value) {
+            $stmt->execute([$key, $value, $key]);
+        }
 
         $message = 'Instalación completada. Usuario admin: admin / admin123. Usuario empleado: empleado / empleado123.';
     } catch (Throwable $exception) {

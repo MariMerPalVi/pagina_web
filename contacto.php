@@ -18,13 +18,13 @@ public_header('Contacto', 'contacto');
       <h2>Solicita información o cotiza tu proyecto</h2>
       <p>Escríbenos por WhatsApp, llamada, correo o formulario. Mientras más detalles compartas, mejor podremos orientarte.</p>
       <ul class="contact-list">
-        <li><strong>WhatsApp:</strong> <a href="<?= e(whatsapp_link('Hola FALEX, necesito información.')) ?>" target="_blank" rel="noopener"><?= e(CONTACT_PHONE) ?></a></li>
-        <li><strong>Correo:</strong> <a href="mailto:<?= e(CONTACT_EMAIL) ?>"><?= e(CONTACT_EMAIL) ?></a></li>
-        <li><strong>Dirección:</strong> <?= e(CONTACT_ADDRESS) ?></li>
+        <li><strong>WhatsApp:</strong> <a href="<?= e(whatsapp_link('Hola FALEX, necesito información.')) ?>" target="_blank" rel="noopener"><?= e(contact_phone()) ?></a></li>
+        <li><strong>Correo:</strong> <a href="mailto:<?= e(contact_email()) ?>"><?= e(contact_email()) ?></a></li>
+        <li><strong>Dirección:</strong> <?= e(contact_address()) ?></li>
         <li><strong>Redes:</strong> <a href="#">Instagram</a> · <a href="#">Facebook</a></li>
       </ul>
     </div>
-    <form class="contact-form" action="mailto:<?= e(CONTACT_EMAIL) ?>" method="post" enctype="text/plain">
+    <form class="contact-form" action="mailto:<?= e(contact_email()) ?>" method="post" enctype="text/plain">
       <label>Nombre<input type="text" name="nombre" placeholder="Tu nombre o institución" required></label>
       <label>Teléfono<input type="tel" name="telefono" placeholder="+593..." required></label>
       <label>Correo electrónico<input type="email" name="correo" placeholder="correo@ejemplo.com"></label>
