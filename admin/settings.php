@@ -24,6 +24,9 @@ $labels = [
     'contact_phone' => 'Teléfono',
     'contact_email' => 'Correo',
     'contact_address' => 'Dirección',
+    'social_instagram' => 'Instagram',
+    'social_facebook' => 'Facebook',
+    'social_tiktok' => 'TikTok',
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -85,6 +88,26 @@ admin_header('Configuración');
     <label>
       Dirección
       <input type="text" name="contact_address" value="<?= e($settings['contact_address']) ?>" placeholder="Ciudad, país" required>
+    </label>
+
+    <div class="panel-subsection">
+      <h3>Redes sociales</h3>
+      <p class="muted-text">Agrega solo las redes que quieras mostrar en la página pública. Si dejas un campo vacío, no aparecerá.</p>
+    </div>
+
+    <label>
+      Instagram
+      <input type="url" name="social_instagram" value="<?= e($settings['social_instagram']) ?>" placeholder="https://instagram.com/falex">
+    </label>
+
+    <label>
+      Facebook
+      <input type="url" name="social_facebook" value="<?= e($settings['social_facebook']) ?>" placeholder="https://facebook.com/falex">
+    </label>
+
+    <label>
+      TikTok
+      <input type="url" name="social_tiktok" value="<?= e($settings['social_tiktok']) ?>" placeholder="https://tiktok.com/@falex">
     </label>
 
     <div class="form-actions">

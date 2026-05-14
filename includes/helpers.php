@@ -20,6 +20,9 @@ const WHATSAPP_NUMBER = '593999999999';
 const CONTACT_EMAIL = 'ventas@falextextil.com';
 const CONTACT_PHONE = '+593 99 999 9999';
 const CONTACT_ADDRESS = 'Quito, Ecuador';
+const SOCIAL_INSTAGRAM = '';
+const SOCIAL_FACEBOOK = '';
+const SOCIAL_TIKTOK = '';
 
 function default_site_settings(): array
 {
@@ -28,6 +31,9 @@ function default_site_settings(): array
         'contact_phone' => CONTACT_PHONE,
         'contact_email' => CONTACT_EMAIL,
         'contact_address' => CONTACT_ADDRESS,
+        'social_instagram' => SOCIAL_INSTAGRAM,
+        'social_facebook' => SOCIAL_FACEBOOK,
+        'social_tiktok' => SOCIAL_TIKTOK,
     ];
 }
 
@@ -77,6 +83,30 @@ function contact_email(): string
 function contact_address(): string
 {
     return site_setting('contact_address');
+}
+
+function social_links(): array
+{
+    return array_filter([
+        'Instagram' => site_setting('social_instagram'),
+        'Facebook' => site_setting('social_facebook'),
+        'TikTok' => site_setting('social_tiktok'),
+    ], static fn (string $url): bool => trim($url) !== '');
+}
+
+function send_email(string $to, string $subject, string $message, ?string $replyTo = null): bool
+{
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/plain; charset=UTF-8',
+        'From: FALEX <' . contact_email() . '>',
+    ];
+
+    if ($replyTo) {
+        $headers[] = 'Reply-To: ' . $replyTo;
+    }
+
+    return @mail($to, $subject, $message, implode("\r\n", $headers));
 }
 
 function e(?string $value): string

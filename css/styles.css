@@ -1319,6 +1319,18 @@ h3 {
   font-weight: 800;
 }
 
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 16px;
+  margin-top: 10px;
+}
+
+.footer-links a {
+  margin-top: 0;
+}
+
 .alert {
   margin-bottom: 18px;
   padding: 14px 16px;

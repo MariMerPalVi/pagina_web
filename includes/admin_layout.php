@@ -17,6 +17,7 @@ function admin_header(string $title): void
     ];
 
     if (is_admin()) {
+        $menu[] = ['Cotizaciones', 'quotes.php', ['quotes.php']];
         $menu[] = ['Empleados', 'employees.php', ['employees.php']];
         $menu[] = ['Configuración', 'settings.php', ['settings.php']];
     }

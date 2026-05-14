@@ -83,12 +83,18 @@ function public_cta(): void
 
 function public_footer(): void
 {
+    $socialLinks = social_links();
     ?>
   <a class="whatsapp-float" href="<?= e(whatsapp_link('Hola FALEX, quiero información sobre sus servicios.')) ?>" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">WhatsApp</a>
 
   <footer class="site-footer">
     <p>© <?= date('Y') ?> FALEX Fábrica Textil. Confección y personalización de prendas.</p>
-    <a href="<?= e(url('login.php')) ?>">Acceso interno</a>
+    <div class="footer-links">
+      <?php foreach ($socialLinks as $name => $link): ?>
+        <a href="<?= e($link) ?>" target="_blank" rel="noopener"><?= e($name) ?></a>
+      <?php endforeach; ?>
+      <a href="<?= e(url('login.php')) ?>">Acceso interno</a>
+    </div>
   </footer>
 
   <script src="<?= e(url('js/main.js')) ?>"></script>
