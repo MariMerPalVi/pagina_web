@@ -9,7 +9,7 @@ const DB_HOST = 'sql112.infinityfree.com';
 const DB_PORT = '3306';
 const DB_NAME = 'if0_41910792_falex';
 const DB_USER = 'if0_41910792';
-const DB_PASS = ''SVY78wl17l53l;
+const DB_PASS = 'SVY78wl17l53l';
 const DB_CHARSET = 'utf8mb4';
 
 function db(): PDO
