@@ -62,32 +62,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $categories = db()->query('SELECT c.*, COUNT(p.id) AS productos FROM categorias c LEFT JOIN productos p ON p.categoria_id = c.id GROUP BY c.id ORDER BY c.nombre')->fetchAll();
+$showModal = isset($_GET['create']) || $editing;
 
 admin_header('Categorías');
 ?>
-<section class="admin-grid">
-  <article class="admin-panel">
-    <div class="panel-heading"><h2><?= $editing ? 'Editar categoría' : 'Crear categoría' ?></h2></div>
-    <form class="admin-form" method="post">
-      <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-      <input type="hidden" name="id" value="<?= (int) ($editing['id'] ?? 0) ?>">
-      <label>Nombre<input type="text" name="nombre" value="<?= e($editing['nombre'] ?? '') ?>" required></label>
-      <label>Descripción<textarea name="descripcion" rows="4"><?= e($editing['descripcion'] ?? '') ?></textarea></label>
-      <label>Estado
-        <select name="estado">
-          <option value="activo" <?= ($editing['estado'] ?? 'activo') === 'activo' ? 'selected' : '' ?>>Activo</option>
-          <option value="inactivo" <?= ($editing['estado'] ?? '') === 'inactivo' ? 'selected' : '' ?>>Inactivo</option>
-        </select>
-      </label>
-      <div class="form-actions">
-        <button class="btn btn-primary" type="submit">Guardar</button>
-        <?php if ($editing): ?><a class="btn btn-secondary" href="<?= e(url('admin/categories.php')) ?>">Cancelar</a><?php endif; ?>
+<section class="admin-panel">
+    <div class="panel-heading">
+      <div>
+        <h2>Listado de categorías</h2>
+        <p class="muted-text">Organiza los filtros que verá el cliente en el catálogo público.</p>
       </div>
-    </form>
-  </article>
-
-  <article class="admin-panel">
-    <div class="panel-heading"><h2>Listado</h2></div>
+      <a class="btn btn-primary" href="<?= e(url('admin/categories.php?create=1')) ?>">Crear categoría</a>
+    </div>
     <div class="table-wrap">
       <table class="admin-table">
         <thead><tr><th>Categoría</th><th>Productos</th><th>Estado</th><th>Acciones</th></tr></thead>
@@ -119,6 +105,36 @@ admin_header('Categorías');
         </tbody>
       </table>
     </div>
-  </article>
 </section>
+
+<?php if ($showModal): ?>
+  <div class="admin-modal" role="dialog" aria-modal="true" aria-labelledby="category-modal-title">
+    <a class="admin-modal-backdrop" href="<?= e(url('admin/categories.php')) ?>" aria-label="Cerrar"></a>
+    <article class="admin-modal-card">
+      <div class="modal-heading">
+        <div>
+          <p class="eyebrow">Categorías</p>
+          <h2 id="category-modal-title"><?= $editing ? 'Editar categoría' : 'Crear categoría' ?></h2>
+        </div>
+        <a class="modal-close" href="<?= e(url('admin/categories.php')) ?>" aria-label="Cerrar">&times;</a>
+      </div>
+      <form class="admin-form" method="post">
+        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+        <input type="hidden" name="id" value="<?= (int) ($editing['id'] ?? 0) ?>">
+        <label>Nombre<input type="text" name="nombre" value="<?= e($editing['nombre'] ?? '') ?>" required autofocus></label>
+        <label>Descripción<textarea name="descripcion" rows="4"><?= e($editing['descripcion'] ?? '') ?></textarea></label>
+        <label>Estado
+          <select name="estado">
+            <option value="activo" <?= ($editing['estado'] ?? 'activo') === 'activo' ? 'selected' : '' ?>>Activo</option>
+            <option value="inactivo" <?= ($editing['estado'] ?? '') === 'inactivo' ? 'selected' : '' ?>>Inactivo</option>
+          </select>
+        </label>
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">Guardar categoría</button>
+          <a class="btn btn-secondary" href="<?= e(url('admin/categories.php')) ?>">Cancelar</a>
+        </div>
+      </form>
+    </article>
+  </div>
+<?php endif; ?>
 <?php admin_footer(); ?>

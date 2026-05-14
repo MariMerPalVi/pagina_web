@@ -63,34 +63,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $employees = db()->query('SELECT id, nombre, correo, usuario, estado, fecha_creacion FROM usuarios WHERE rol = "empleado" ORDER BY fecha_creacion DESC')->fetchAll();
+$showModal = isset($_GET['create']) || $editing;
 
 admin_header('Empleados');
 ?>
-<section class="admin-grid">
-  <article class="admin-panel">
-    <div class="panel-heading"><h2><?= $editing ? 'Editar empleado' : 'Crear empleado' ?></h2></div>
-    <form class="admin-form" method="post">
-      <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
-      <input type="hidden" name="id" value="<?= (int) ($editing['id'] ?? 0) ?>">
-      <label>Nombre<input type="text" name="nombre" value="<?= e($editing['nombre'] ?? '') ?>" required></label>
-      <label>Correo<input type="email" name="correo" value="<?= e($editing['correo'] ?? '') ?>" required></label>
-      <label>Usuario<input type="text" name="usuario" value="<?= e($editing['usuario'] ?? '') ?>" required></label>
-      <label>Contraseña<input type="password" name="password" placeholder="<?= $editing ? 'Dejar vacío para no cambiar' : 'Contraseña inicial' ?>"></label>
-      <label>Estado
-        <select name="estado">
-          <option value="activo" <?= ($editing['estado'] ?? 'activo') === 'activo' ? 'selected' : '' ?>>Activo</option>
-          <option value="inactivo" <?= ($editing['estado'] ?? '') === 'inactivo' ? 'selected' : '' ?>>Inactivo</option>
-        </select>
-      </label>
-      <div class="form-actions">
-        <button class="btn btn-primary" type="submit">Guardar empleado</button>
-        <?php if ($editing): ?><a class="btn btn-secondary" href="<?= e(url('admin/employees.php')) ?>">Cancelar</a><?php endif; ?>
+<section class="admin-panel">
+    <div class="panel-heading">
+      <div>
+        <h2>Listado de empleados</h2>
+        <p class="muted-text">Gestiona los usuarios internos que pueden administrar el catálogo.</p>
       </div>
-    </form>
-  </article>
-
-  <article class="admin-panel">
-    <div class="panel-heading"><h2>Listado de empleados</h2></div>
+      <a class="btn btn-primary" href="<?= e(url('admin/employees.php?create=1')) ?>">Crear empleado</a>
+    </div>
     <div class="table-wrap">
       <table class="admin-table">
         <thead><tr><th>Empleado</th><th>Usuario</th><th>Estado</th><th>Acciones</th></tr></thead>
@@ -114,6 +98,38 @@ admin_header('Empleados');
         </tbody>
       </table>
     </div>
-  </article>
 </section>
+
+<?php if ($showModal): ?>
+  <div class="admin-modal" role="dialog" aria-modal="true" aria-labelledby="employee-modal-title">
+    <a class="admin-modal-backdrop" href="<?= e(url('admin/employees.php')) ?>" aria-label="Cerrar"></a>
+    <article class="admin-modal-card">
+      <div class="modal-heading">
+        <div>
+          <p class="eyebrow">Empleados</p>
+          <h2 id="employee-modal-title"><?= $editing ? 'Editar empleado' : 'Crear empleado' ?></h2>
+        </div>
+        <a class="modal-close" href="<?= e(url('admin/employees.php')) ?>" aria-label="Cerrar">&times;</a>
+      </div>
+      <form class="admin-form" method="post">
+        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+        <input type="hidden" name="id" value="<?= (int) ($editing['id'] ?? 0) ?>">
+        <label>Nombre<input type="text" name="nombre" value="<?= e($editing['nombre'] ?? '') ?>" required autofocus></label>
+        <label>Correo<input type="email" name="correo" value="<?= e($editing['correo'] ?? '') ?>" required></label>
+        <label>Usuario<input type="text" name="usuario" value="<?= e($editing['usuario'] ?? '') ?>" required></label>
+        <label>Contraseña<input type="password" name="password" placeholder="<?= $editing ? 'Dejar vacío para no cambiar' : 'Contraseña inicial' ?>" <?= $editing ? '' : 'required' ?>></label>
+        <label>Estado
+          <select name="estado">
+            <option value="activo" <?= ($editing['estado'] ?? 'activo') === 'activo' ? 'selected' : '' ?>>Activo</option>
+            <option value="inactivo" <?= ($editing['estado'] ?? '') === 'inactivo' ? 'selected' : '' ?>>Inactivo</option>
+          </select>
+        </label>
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">Guardar empleado</button>
+          <a class="btn btn-secondary" href="<?= e(url('admin/employees.php')) ?>">Cancelar</a>
+        </div>
+      </form>
+    </article>
+  </div>
+<?php endif; ?>
 <?php admin_footer(); ?>

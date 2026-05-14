@@ -26,13 +26,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $products = db()->query('SELECT p.*, c.nombre AS categoria, u.nombre AS creador FROM productos p INNER JOIN categorias c ON c.id = p.categoria_id LEFT JOIN usuarios u ON u.id = p.creado_por ORDER BY p.fecha_creacion DESC')->fetchAll();
+$categories = db()->query('SELECT id, nombre FROM categorias WHERE estado = "activo" ORDER BY nombre')->fetchAll();
+$showCreateModal = isset($_GET['create']);
 
 admin_header('Productos');
 ?>
 <section class="admin-panel">
   <div class="panel-heading">
-    <h2>Catálogo administrable</h2>
-    <a class="btn btn-primary" href="<?= e(url('admin/product_form.php')) ?>">Crear producto</a>
+    <div>
+      <h2>Catálogo administrable</h2>
+      <p class="muted-text">Crea, edita y controla los productos visibles en el sitio público.</p>
+    </div>
+    <a class="btn btn-primary" href="<?= e(url('admin/products.php?create=1')) ?>">Crear producto</a>
   </div>
   <div class="table-wrap">
     <table class="admin-table">
@@ -71,4 +76,46 @@ admin_header('Productos');
     </table>
   </div>
 </section>
+
+<?php if ($showCreateModal): ?>
+  <div class="admin-modal" role="dialog" aria-modal="true" aria-labelledby="product-modal-title">
+    <a class="admin-modal-backdrop" href="<?= e(url('admin/products.php')) ?>" aria-label="Cerrar"></a>
+    <article class="admin-modal-card admin-modal-wide">
+      <div class="modal-heading">
+        <div>
+          <p class="eyebrow">Productos</p>
+          <h2 id="product-modal-title">Crear producto</h2>
+        </div>
+        <a class="modal-close" href="<?= e(url('admin/products.php')) ?>" aria-label="Cerrar">&times;</a>
+      </div>
+      <form class="admin-form" method="post" action="<?= e(url('admin/product_form.php')) ?>" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+        <label>Nombre del producto<input type="text" name="nombre" required autofocus></label>
+        <label>Descripción<textarea name="descripcion" rows="4" required></textarea></label>
+        <div class="form-grid">
+          <label>Precio<input type="number" name="precio" min="0" step="0.01" value="0.00" required></label>
+          <label>Categoría
+            <select name="categoria_id" required>
+              <option value="">Selecciona una categoría</option>
+              <?php foreach ($categories as $category): ?>
+                <option value="<?= (int) $category['id'] ?>"><?= e($category['nombre']) ?></option>
+              <?php endforeach; ?>
+            </select>
+          </label>
+          <label>Estado
+            <select name="estado">
+              <option value="activo">Activo</option>
+              <option value="inactivo">Inactivo</option>
+            </select>
+          </label>
+          <label>Imagen principal<input type="file" name="imagen" accept="image/jpeg,image/png,image/webp"><small>Los productos activos con imagen aparecerán en la galería pública.</small></label>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">Guardar producto</button>
+          <a class="btn btn-secondary" href="<?= e(url('admin/products.php')) ?>">Cancelar</a>
+        </div>
+      </form>
+    </article>
+  </div>
+<?php endif; ?>
 <?php admin_footer(); ?>
