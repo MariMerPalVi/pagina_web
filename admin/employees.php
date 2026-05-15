@@ -96,18 +96,18 @@ admin_header('Empleados');
               <td data-label="Usuario"><?= e($employee['usuario']) ?></td>
               <td data-label="Estado"><span class="status <?= e($employee['estado']) ?>"><?= e($employee['estado']) ?></span></td>
               <td class="actions" data-label="Acciones">
-                <a class="btn btn-small" href="<?= e(url('admin/employees.php?edit=' . (int) $employee['id'])) ?>">Editar</a>
+                <a class="btn btn-small" href="<?= e(url('admin/employees.php?edit=' . (int) $employee['id'])) ?>" title="Editar">Editar</a>
                 <form method="post">
                   <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
                   <input type="hidden" name="id" value="<?= (int) $employee['id'] ?>">
                   <input type="hidden" name="action" value="toggle">
-                  <button class="btn btn-small" type="submit"><?= $employee['estado'] === 'activo' ? 'Desactivar' : 'Activar' ?></button>
+                  <button class="btn btn-small" type="submit" title="<?= $employee['estado'] === 'activo' ? 'Desactivar' : 'Activar' ?>"><?= $employee['estado'] === 'activo' ? 'Inactivar' : 'Activar' ?></button>
                 </form>
                 <form method="post" onsubmit="return confirm('¿Eliminar este empleado? Esta acción no se puede deshacer.')">
                   <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
                   <input type="hidden" name="id" value="<?= (int) $employee['id'] ?>">
                   <input type="hidden" name="action" value="delete">
-                  <button class="btn btn-danger btn-small" type="submit">Eliminar</button>
+                  <button class="btn btn-danger btn-small" type="submit" title="Eliminar">Eliminar</button>
                 </form>
               </td>
             </tr>

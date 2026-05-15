@@ -84,19 +84,19 @@ admin_header('Categorías');
               <td data-label="Productos"><?= (int) $category['productos'] ?></td>
               <td data-label="Estado"><span class="status <?= e($category['estado']) ?>"><?= e($category['estado']) ?></span></td>
               <td class="actions" data-label="Acciones">
-                <a class="btn btn-small" href="<?= e(url('admin/categories.php?edit=' . (int) $category['id'])) ?>">Editar</a>
+                <a class="btn btn-small" href="<?= e(url('admin/categories.php?edit=' . (int) $category['id'])) ?>" title="Editar">Editar</a>
                 <form method="post">
                   <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
                   <input type="hidden" name="id" value="<?= (int) $category['id'] ?>">
                   <input type="hidden" name="action" value="toggle">
-                  <button class="btn btn-small" type="submit"><?= $category['estado'] === 'activo' ? 'Desactivar' : 'Activar' ?></button>
+                  <button class="btn btn-small" type="submit" title="<?= $category['estado'] === 'activo' ? 'Desactivar' : 'Activar' ?>"><?= $category['estado'] === 'activo' ? 'Inactivar' : 'Activar' ?></button>
                 </form>
                 <?php if (is_admin()): ?>
                   <form method="post" onsubmit="return confirm('¿Eliminar esta categoría?')">
                     <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
                     <input type="hidden" name="id" value="<?= (int) $category['id'] ?>">
                     <input type="hidden" name="action" value="delete">
-                    <button class="btn btn-danger btn-small" type="submit">Eliminar</button>
+                    <button class="btn btn-danger btn-small" type="submit" title="Eliminar">Eliminar</button>
                   </form>
                 <?php endif; ?>
               </td>

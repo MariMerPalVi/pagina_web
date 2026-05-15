@@ -51,19 +51,19 @@ admin_header('Productos');
             <td data-label="Precio">$<?= number_format((float) $product['precio'], 2) ?></td>
             <td data-label="Estado"><span class="status <?= e($product['estado']) ?>"><?= e($product['estado']) ?></span></td>
             <td class="actions" data-label="Acciones">
-              <a class="btn btn-small" href="<?= e(url('admin/product_form.php?id=' . (int) $product['id'])) ?>">Editar</a>
+              <a class="btn btn-small" href="<?= e(url('admin/product_form.php?id=' . (int) $product['id'])) ?>" title="Editar">Editar</a>
               <form method="post">
                 <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
                 <input type="hidden" name="id" value="<?= (int) $product['id'] ?>">
                 <input type="hidden" name="action" value="toggle">
-                <button class="btn btn-small" type="submit"><?= $product['estado'] === 'activo' ? 'Desactivar' : 'Activar' ?></button>
+                <button class="btn btn-small" type="submit" title="<?= $product['estado'] === 'activo' ? 'Desactivar' : 'Activar' ?>"><?= $product['estado'] === 'activo' ? 'Inactivar' : 'Activar' ?></button>
               </form>
               <?php if (is_admin()): ?>
                 <form method="post" onsubmit="return confirm('¿Eliminar este producto?')">
                   <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
                   <input type="hidden" name="id" value="<?= (int) $product['id'] ?>">
                   <input type="hidden" name="action" value="delete">
-                  <button class="btn btn-danger btn-small" type="submit">Eliminar</button>
+                  <button class="btn btn-danger btn-small" type="submit" title="Eliminar">Eliminar</button>
                 </form>
               <?php endif; ?>
             </td>

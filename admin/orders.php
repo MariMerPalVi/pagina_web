@@ -260,14 +260,14 @@ admin_header('Órdenes');
             <td data-label="Responsables"><?= e($order['responsables'] ?: 'Sin asignar') ?></td>
             <td data-label="Estado"><span class="status <?= e($order['estado']) ?>"><?= e(str_replace('_', ' ', $order['estado'])) ?></span></td>
             <td class="actions" data-label="Acciones">
-              <a class="btn btn-small" href="<?= e(url('admin/orders.php?view=' . (int) $order['id'])) ?>">Ver detalle</a>
+              <a class="btn btn-small" href="<?= e(url('admin/orders.php?view=' . (int) $order['id'])) ?>" title="Ver detalle">Ver</a>
               <?php if (is_admin()): ?>
                 <a class="btn btn-small" href="<?= e(url('admin/orders.php?edit=' . (int) $order['id'])) ?>">Editar</a>
                 <form method="post" onsubmit="return confirm('¿Eliminar esta orden?')">
                   <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
                   <input type="hidden" name="id" value="<?= (int) $order['id'] ?>">
                   <input type="hidden" name="action" value="delete">
-                  <button class="btn btn-danger btn-small" type="submit">Eliminar</button>
+                  <button class="btn btn-danger btn-small" type="submit" title="Eliminar">Eliminar</button>
                 </form>
               <?php endif; ?>
             </td>

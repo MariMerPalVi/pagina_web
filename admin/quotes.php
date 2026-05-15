@@ -268,7 +268,7 @@ admin_header('Cotizaciones');
             <td data-label="Fecha"><?= e(date('d/m/Y H:i', strtotime($quote['fecha_creacion']))) ?></td>
             <td data-label="Estado"><span class="status <?= e($quote['estado']) ?>"><?= e(str_replace('_', ' ', $quote['estado'])) ?></span></td>
             <td class="actions" data-label="Acciones">
-              <a class="btn btn-small" href="<?= e(url('admin/quotes.php?view=' . (int) $quote['id'])) ?>">Ver / gestionar</a>
+              <a class="btn btn-small" href="<?= e(url('admin/quotes.php?view=' . (int) $quote['id'])) ?>" title="Ver y gestionar">Gestionar</a>
             </td>
           </tr>
         <?php endforeach; ?>
