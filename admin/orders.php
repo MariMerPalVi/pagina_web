@@ -290,7 +290,10 @@ admin_header('Órdenes');
           <p class="eyebrow">Orden #<?= (int) $selected['id'] ?></p>
           <h2 id="order-modal-title"><?= e($selected['producto']) ?></h2>
         </div>
-        <a class="modal-close" href="<?= e(url('admin/orders.php')) ?>" aria-label="Cerrar">&times;</a>
+        <div class="modal-tools">
+          <button class="btn btn-small btn-secondary" type="button" onclick="window.print()">Imprimir</button>
+          <a class="modal-close" href="<?= e(url('admin/orders.php')) ?>" aria-label="Cerrar">&times;</a>
+        </div>
       </div>
 
       <div class="quote-detail">

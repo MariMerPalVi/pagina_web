@@ -31,6 +31,40 @@ $labels = [
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf();
+    $action = $_POST['action'] ?? 'site_settings';
+
+    if ($action === 'change_password') {
+        $currentPassword = $_POST['current_password'] ?? '';
+        $newPassword = $_POST['new_password'] ?? '';
+        $confirmPassword = $_POST['confirm_password'] ?? '';
+        $user = current_user();
+
+        try {
+            if (strlen($newPassword) < 8) {
+                throw new RuntimeException('La nueva contraseña debe tener al menos 8 caracteres.');
+            }
+
+            if ($newPassword !== $confirmPassword) {
+                throw new RuntimeException('La confirmación no coincide con la nueva contraseña.');
+            }
+
+            $stmt = db()->prepare('SELECT password_hash FROM usuarios WHERE id = ? LIMIT 1');
+            $stmt->execute([$user['id']]);
+            $row = $stmt->fetch();
+
+            if (!$row || !password_verify($currentPassword, $row['password_hash'])) {
+                throw new RuntimeException('La contraseña actual no es correcta.');
+            }
+
+            $stmt = db()->prepare('UPDATE usuarios SET password_hash = ? WHERE id = ?');
+            $stmt->execute([password_hash($newPassword, PASSWORD_DEFAULT), $user['id']]);
+            flash('success', 'Contraseña actualizada correctamente.');
+        } catch (Throwable $exception) {
+            flash('error', $exception->getMessage());
+        }
+
+        redirect('admin/settings.php');
+    }
 
     $stmt = db()->prepare(
         'INSERT INTO configuraciones (clave, valor)
@@ -68,6 +102,7 @@ admin_header('Configuración');
 
   <form class="admin-form" method="post">
     <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+    <input type="hidden" name="action" value="site_settings">
 
     <label>
       WhatsApp
@@ -112,6 +147,34 @@ admin_header('Configuración');
 
     <div class="form-actions">
       <button class="btn btn-primary" type="submit">Guardar configuración</button>
+    </div>
+  </form>
+</section>
+
+<section class="admin-panel narrow-panel">
+  <div class="panel-heading">
+    <div>
+      <h2>Cambiar contraseña</h2>
+      <p class="muted-text">Actualiza tu clave de acceso al panel interno cuando lo necesites.</p>
+    </div>
+  </div>
+
+  <form class="admin-form" method="post">
+    <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+    <input type="hidden" name="action" value="change_password">
+    <div class="form-grid">
+      <label>Contraseña actual
+        <input type="password" name="current_password" required autocomplete="current-password">
+      </label>
+      <label>Nueva contraseña
+        <input type="password" name="new_password" minlength="8" required autocomplete="new-password">
+      </label>
+      <label>Confirmar nueva contraseña
+        <input type="password" name="confirm_password" minlength="8" required autocomplete="new-password">
+      </label>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">Actualizar contraseña</button>
     </div>
   </form>
 </section>

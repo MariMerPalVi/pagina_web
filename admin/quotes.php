@@ -87,6 +87,7 @@ try {
 }
 
 $viewId = (int) ($_GET['view'] ?? 0);
+$creating = isset($_GET['create']);
 $selected = null;
 $workOrder = null;
 
@@ -95,6 +96,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $action = $_POST['action'] ?? '';
     $id = (int) ($_POST['id'] ?? 0);
+
+    if ($action === 'create_quote') {
+        $nombre = trim($_POST['nombre'] ?? '');
+        $telefono = trim($_POST['telefono'] ?? '');
+        $correo = trim($_POST['correo'] ?? '');
+        $producto = trim($_POST['producto'] ?? '');
+        $mensaje = trim($_POST['mensaje'] ?? '');
+        $nota = trim($_POST['respuesta'] ?? '');
+        $estado = $_POST['estado'] ?? 'pendiente';
+
+        if (!in_array($estado, ['pendiente', 'respondida', 'no_respondida'], true)) {
+            $estado = 'pendiente';
+        }
+
+        if ($nombre === '' || $telefono === '' || $producto === '' || $mensaje === '') {
+            flash('error', 'Completa cliente, teléfono, producto y detalle de la cotización.');
+            redirect('admin/quotes.php?create=1');
+        }
+
+        $stmt = db()->prepare(
+            'INSERT INTO solicitudes_cotizacion
+            (nombre, telefono, correo, producto, mensaje, respuesta, estado, respondido_por, fecha_respuesta)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        );
+        $stmt->execute([
+            $nombre,
+            $telefono,
+            $correo ?: null,
+            $producto,
+            $mensaje,
+            $nota ?: null,
+            $estado,
+            $nota !== '' || $estado !== 'pendiente' ? current_user()['id'] : null,
+            $nota !== '' || $estado !== 'pendiente' ? date('Y-m-d H:i:s') : null,
+        ]);
+
+        flash('success', 'Cotización creada correctamente.');
+        redirect('admin/quotes.php?view=' . (int) db()->lastInsertId());
+    }
 
     if ($action === 'update_status' && $id > 0) {
         $estado = $_POST['estado'] ?? 'pendiente';
@@ -211,6 +251,9 @@ admin_header('Cotizaciones');
       <h2>Solicitudes recibidas</h2>
       <p class="muted-text">Controla los mensajes enviados desde el formulario público y registra el estado de atención.</p>
     </div>
+    <div class="panel-actions">
+      <a class="btn btn-primary" href="<?= e(url('admin/quotes.php?create=1')) ?>">Crear cotización</a>
+    </div>
   </div>
 
   <div class="table-wrap">
@@ -246,7 +289,10 @@ admin_header('Cotizaciones');
           <p class="eyebrow">Solicitud #<?= (int) $selected['id'] ?></p>
           <h2 id="quote-modal-title"><?= e($selected['nombre']) ?></h2>
         </div>
-        <a class="modal-close" href="<?= e(url('admin/quotes.php')) ?>" aria-label="Cerrar">&times;</a>
+        <div class="modal-tools">
+          <button class="btn btn-small btn-secondary" type="button" onclick="window.print()">Imprimir</button>
+          <a class="modal-close" href="<?= e(url('admin/quotes.php')) ?>" aria-label="Cerrar">&times;</a>
+        </div>
       </div>
 
       <div class="quote-detail">
@@ -335,6 +381,47 @@ admin_header('Cotizaciones');
           <?php endif; ?>
         </div>
       <?php endif; ?>
+    </article>
+  </div>
+<?php endif; ?>
+<?php if ($creating): ?>
+  <div class="admin-modal" role="dialog" aria-modal="true" aria-labelledby="quote-create-title">
+    <a class="admin-modal-backdrop" href="<?= e(url('admin/quotes.php')) ?>" aria-label="Cerrar"></a>
+    <article class="admin-modal-card admin-modal-wide">
+      <div class="modal-heading">
+        <div>
+          <p class="eyebrow">Cotizaciones</p>
+          <h2 id="quote-create-title">Crear cotización</h2>
+        </div>
+        <a class="modal-close" href="<?= e(url('admin/quotes.php')) ?>" aria-label="Cerrar">&times;</a>
+      </div>
+      <form class="admin-form" method="post">
+        <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+        <input type="hidden" name="action" value="create_quote">
+        <div class="form-grid">
+          <label>Cliente<input type="text" name="nombre" required></label>
+          <label>Teléfono<input type="text" name="telefono" required></label>
+          <label>Correo<input type="email" name="correo"></label>
+          <label>Producto requerido<input type="text" name="producto" required></label>
+          <label>Estado
+            <select name="estado">
+              <option value="pendiente">Pendiente</option>
+              <option value="respondida">Respondida</option>
+              <option value="no_respondida">No respondida</option>
+            </select>
+          </label>
+        </div>
+        <label>Detalle de la cotización
+          <textarea name="mensaje" rows="5" placeholder="Producto, cantidades, tallas, colores, fecha de entrega y observaciones." required></textarea>
+        </label>
+        <label>Nota interna
+          <textarea name="respuesta" rows="4" placeholder="Seguimiento interno, acuerdos o información de atención."></textarea>
+        </label>
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">Guardar cotización</button>
+          <a class="btn btn-secondary" href="<?= e(url('admin/quotes.php')) ?>">Cancelar</a>
+        </div>
+      </form>
     </article>
   </div>
 <?php endif; ?>

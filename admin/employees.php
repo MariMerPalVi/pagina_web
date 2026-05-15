@@ -26,6 +26,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect('admin/employees.php');
     }
 
+    if ($action === 'delete' && $id > 0) {
+        try {
+            $stmt = db()->prepare('DELETE FROM usuarios WHERE id = ? AND rol = "empleado"');
+            $stmt->execute([$id]);
+            flash('success', 'Empleado eliminado correctamente.');
+        } catch (Throwable) {
+            flash('error', 'No se pudo eliminar el empleado porque tiene registros asociados. Puedes desactivarlo.');
+        }
+        redirect('admin/employees.php');
+    }
+
     $nombre = trim($_POST['nombre'] ?? '');
     $correo = trim($_POST['correo'] ?? '');
     $usuario = trim($_POST['usuario'] ?? '');
@@ -91,6 +102,12 @@ admin_header('Empleados');
                   <input type="hidden" name="id" value="<?= (int) $employee['id'] ?>">
                   <input type="hidden" name="action" value="toggle">
                   <button class="btn btn-small" type="submit"><?= $employee['estado'] === 'activo' ? 'Desactivar' : 'Activar' ?></button>
+                </form>
+                <form method="post" onsubmit="return confirm('¿Eliminar este empleado? Esta acción no se puede deshacer.')">
+                  <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
+                  <input type="hidden" name="id" value="<?= (int) $employee['id'] ?>">
+                  <input type="hidden" name="action" value="delete">
+                  <button class="btn btn-danger btn-small" type="submit">Eliminar</button>
                 </form>
               </td>
             </tr>

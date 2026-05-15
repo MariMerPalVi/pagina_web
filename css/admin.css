@@ -195,7 +195,9 @@ body.admin-body::before {
 
 .quick-actions,
 .form-actions,
-.actions {
+.actions,
+.panel-actions,
+.modal-tools {
   display: flex;
   flex-wrap: wrap;
   gap: 9px;
@@ -271,6 +273,10 @@ body.admin-body::before {
 
 .admin-panel {
   padding: 22px;
+}
+
+.admin-panel + .admin-panel {
+  margin-top: 16px;
 }
 
 .narrow-panel {
@@ -801,6 +807,12 @@ body.admin-body::before {
   background: var(--admin-brand);
 }
 
+.modal-tools {
+  align-items: center;
+  justify-content: flex-end;
+  flex: 0 0 auto;
+}
+
 @media (max-width: 1100px) {
   body.admin-body {
     grid-template-columns: 238px minmax(0, 1fr);
@@ -1019,7 +1031,7 @@ body.admin-body::before {
   }
 
   .admin-table tr {
-    padding: 14px;
+    padding: 12px;
     border: 1px solid var(--admin-line);
     border-radius: 12px;
     background: #fff;
@@ -1034,12 +1046,12 @@ body.admin-body::before {
 
   .admin-table td {
     width: auto !important;
-    min-height: 38px;
+    min-height: 0;
     display: grid;
-    grid-template-columns: 112px minmax(0, 1fr);
-    gap: 12px;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 10px;
     align-items: center;
-    padding: 8px 0;
+    padding: 7px 0;
     border-bottom: 1px solid #f0ebe3;
   }
 
@@ -1057,13 +1069,35 @@ body.admin-body::before {
 
   .admin-table td.actions {
     display: grid;
-    grid-template-columns: 112px minmax(0, 1fr);
+    grid-template-columns: 96px minmax(0, 1fr);
+  }
+
+  .admin-table td.actions::before {
+    align-self: start;
+    padding-top: 9px;
   }
 
   .admin-table td.actions > a,
-  .admin-table td.actions > form,
-  .admin-table td.actions button {
+  .admin-table td.actions > form {
+    min-width: 0;
+  }
+
+  .admin-table td.actions {
+    align-items: start;
+  }
+
+  .admin-table td.actions > a,
+  .admin-table td.actions > form button {
     width: 100%;
+  }
+
+  .admin-table td.actions > form {
+    width: 100%;
+  }
+
+  .admin-table .status {
+    justify-self: start;
+    min-width: 112px;
   }
 }
 
@@ -1248,24 +1282,29 @@ body.admin-body {
 
 @media (max-width: 520px) {
   .admin-table tr {
-    padding: 12px;
+    padding: 11px;
   }
 
   .admin-table td,
   .admin-table td.actions {
-    grid-template-columns: 1fr;
-    gap: 5px;
-    align-items: start;
+    grid-template-columns: 86px minmax(0, 1fr);
+    gap: 8px;
+    align-items: center;
   }
 
   .admin-table td::before {
-    margin-bottom: 2px;
+    margin-bottom: 0;
   }
 
   .admin-table td.actions > a,
   .admin-table td.actions > form,
   .admin-table td.actions button {
     width: 100%;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 
   .recent-products-list article {
@@ -1400,5 +1439,71 @@ body.admin-body {
 @media (max-width: 380px) {
   .admin-stats {
     grid-template-columns: 1fr !important;
+  }
+
+  .admin-table td,
+  .admin-table td.actions {
+    grid-template-columns: 1fr;
+    gap: 5px;
+    align-items: start;
+  }
+}
+
+@media print {
+  body.admin-body {
+    display: block;
+    color: #111;
+    background: #fff !important;
+  }
+
+  .admin-sidebar,
+  .admin-mobilebar,
+  .admin-mobile-menu,
+  .admin-topbar,
+  .alert,
+  .admin-panel,
+  .admin-modal-backdrop,
+  .modal-close,
+  .modal-tools,
+  .form-actions,
+  .admin-form {
+    display: none !important;
+  }
+
+  .admin-main {
+    width: 100%;
+    padding: 0;
+  }
+
+  .admin-modal {
+    position: static;
+    display: block;
+    padding: 0;
+  }
+
+  .admin-modal-card {
+    width: 100%;
+    max-height: none;
+    overflow: visible;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .modal-heading {
+    position: static;
+    top: auto;
+    background: #fff;
+  }
+
+  .quote-message,
+  .quote-response {
+    border-color: #bbb;
+    background: #fff;
+  }
+
+  .order-images {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
