@@ -61,6 +61,7 @@ function admin_header(string $title): void
         <a class="<?= in_array($current, $matches, true) ? 'active' : '' ?>" href="<?= e(url('admin/' . $href)) ?>"><?= e($label) ?></a>
       <?php endforeach; ?>
       <a href="<?= e(url('index.php')) ?>" target="_blank" rel="noopener">Ver sitio</a>
+      <a href="<?= e(url('logout.php')) ?>">Salir</a>
     </nav>
     <header class="admin-topbar">
       <div>

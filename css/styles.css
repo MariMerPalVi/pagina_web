@@ -3332,15 +3332,21 @@ video {
   .hero {
     padding-top: 34px;
     grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .hero-content {
+    order: 2;
   }
 
   .hero-panel {
+    order: 1;
     min-height: auto;
-    padding: 24px 0;
+    padding: 18px 0 6px;
   }
 
   .fabric-card {
-    width: min(82vw, 280px);
+    width: min(66vw, 240px);
   }
 
   .trust-strip,
@@ -3446,6 +3452,19 @@ video {
   .hero-copy,
   .page-hero p:not(.eyebrow) {
     font-size: 0.98rem;
+  }
+
+  .hero {
+    gap: 18px;
+    padding-top: 24px;
+  }
+
+  .hero-panel {
+    padding-top: 12px;
+  }
+
+  .fabric-card {
+    width: min(62vw, 210px);
   }
 
   .footer-page-links {
