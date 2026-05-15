@@ -1088,3 +1088,187 @@ body.admin-body::before {
     gap: 6px;
   }
 }
+
+/* Admin responsive polish */
+body.admin-body {
+  overflow-x: hidden;
+}
+
+.admin-panel,
+.dashboard-summary,
+.admin-stats article,
+.admin-table,
+.admin-form,
+.admin-modal-card {
+  min-width: 0;
+}
+
+.admin-topbar h1,
+.admin-panel h2,
+.dashboard-summary h2,
+.admin-table td,
+.admin-user strong {
+  overflow-wrap: anywhere;
+}
+
+.admin-table {
+  max-width: 100%;
+}
+
+.table-wrap {
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 760px) {
+  .admin-main {
+    padding: 12px 10px 38px;
+  }
+
+  .admin-mobilebar {
+    margin: -12px -10px 0;
+    padding: 10px;
+  }
+
+  .admin-mobile-menu {
+    top: 63px;
+    margin: 0 -10px 16px;
+    padding: 9px 10px;
+  }
+
+  .admin-mobile-menu a {
+    min-height: 36px;
+    padding: 8px 11px;
+    font-size: 0.82rem;
+  }
+
+  .admin-topbar {
+    gap: 12px;
+  }
+
+  .admin-topbar h1 {
+    font-size: clamp(1.8rem, 11vw, 2.25rem);
+  }
+
+  .admin-topbar-actions {
+    width: 100%;
+  }
+
+  .admin-topbar-actions .btn,
+  .admin-user {
+    width: 100%;
+  }
+
+  .dashboard-summary,
+  .admin-panel,
+  .admin-stats article {
+    padding: 16px;
+  }
+
+  .panel-heading {
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+  }
+
+  .panel-heading h2,
+  .admin-panel h2 {
+    font-size: 1.12rem;
+  }
+
+  .admin-stats {
+    gap: 10px;
+  }
+
+  .admin-stats article {
+    min-height: auto;
+  }
+
+  .admin-stats strong {
+    font-size: 1.8rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-form input,
+  .admin-form select,
+  .admin-form textarea {
+    min-height: 46px;
+    font-size: 16px;
+  }
+
+  .admin-form select[multiple] {
+    min-height: 150px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions .btn,
+  .form-actions button {
+    width: 100%;
+  }
+
+  .admin-modal {
+    align-items: end;
+    padding: 8px;
+  }
+
+  .admin-modal-card {
+    max-height: 92vh;
+    padding: 16px;
+    border-radius: 14px 14px 8px 8px;
+  }
+
+  .modal-heading {
+    top: -16px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+  }
+
+  .modal-heading h2 {
+    font-size: 1.2rem;
+  }
+
+  .modal-close {
+    width: 34px;
+    height: 34px;
+  }
+
+  .order-images {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .actions {
+    gap: 7px;
+  }
+}
+
+@media (max-width: 520px) {
+  .admin-table tr {
+    padding: 12px;
+  }
+
+  .admin-table td,
+  .admin-table td.actions {
+    grid-template-columns: 1fr;
+    gap: 5px;
+    align-items: start;
+  }
+
+  .admin-table td::before {
+    margin-bottom: 2px;
+  }
+
+  .admin-table td.actions > a,
+  .admin-table td.actions > form,
+  .admin-table td.actions button {
+    width: 100%;
+  }
+
+  .recent-products-list article {
+    grid-template-columns: 48px minmax(0, 1fr);
+  }
+}
